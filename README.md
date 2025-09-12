@@ -15,8 +15,14 @@ Este repositório contém os códigos da entrega obrigatória do dia **15/09**, 
 - Pasta `__pycache__` foi ignorada por não ser necessária na entrega.
 - O vídeo demonstrativo será adicionado assim que o membro responsável enviar o link.
 
+## 🎥 Demonstração em vídeo
+
+Assista à demonstração dos CRUDs funcionando:
+
+🔗 [Clique aqui para ver o vídeo] (https://www.youtube.com/watch?v=GMn2XEIg4Nk&ab_channel=NicollasSouza)
+
 ## Status da entrega
 
 ☐ Código validado pelo orientador  
 ✅ Branch separada criada: `entrega-15-09`  
-⏳ Aguardando link do vídeo demonstrativo
+✅ Link do vídeo demonstrativo
