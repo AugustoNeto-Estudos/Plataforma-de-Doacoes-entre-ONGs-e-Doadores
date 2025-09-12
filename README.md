@@ -25,4 +25,4 @@ Assista à demonstração dos CRUDs funcionando:
 
 ☐ Código validado pelo orientador  
 ✅ Branch separada criada: `entrega-15-09`  
-✅ Link do vídeo demonstrativo
+... Link do vídeo demonstrativo
