@@ -13,13 +13,13 @@ Este repositório contém os códigos da entrega obrigatória do dia **15/09**, 
 ## Observações
 
 - Pasta `__pycache__` foi ignorada por não ser necessária na entrega.
-- O vídeo demonstrativo será adicionado assim que o membro responsável enviar o link.
+- Atualizei os nomes dos arquivos conforme solicitado pelo professor orientador Adilson.
 
 ## 🎥 Demonstração em vídeo
 
 Assista à demonstração dos CRUDs funcionando:
 
-🔗 [Clique aqui para ver o vídeo] (https://www.youtube.com/watch?v=GMn2XEIg4Nk&ab_channel=NicollasSouza)
+🔗 [Clique aqui para ver o vídeo] ()
 
 ## Status da entrega
 
