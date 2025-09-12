@@ -19,10 +19,10 @@ Este repositório contém os códigos da entrega obrigatória do dia **15/09**, 
 
 Assista à demonstração dos CRUDs funcionando:
 
-🔗 [Clique aqui para ver o vídeo] ()
+🔗 [Clique aqui para ver o vídeo] (https://www.youtube.com/watch?v=MBDbyZ1xOvs&ab_channel=NicollasSouza)
 
 ## Status da entrega
 
 ☐ Código validado pelo orientador  
 ✅ Branch separada criada: `entrega-15-09`  
-... Link do vídeo demonstrativo
+✅ Link do vídeo demonstrativo
