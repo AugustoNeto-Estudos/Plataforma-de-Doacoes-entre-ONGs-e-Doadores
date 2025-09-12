@@ -6,7 +6,7 @@ Este repositório contém os códigos da entrega obrigatória do dia **15/09**, 
 
 ## Estrutura
 
-- `pages/`: contém os arquivos de CRUDs das entidades (ex: doador, ong, item, pedido, intenção de doação, lista, lista_item, pedido_item ).
+- `pages/`: contém os arquivos de CRUDs das entidades (ex: doador, ong, item, pedido, intenção de doação, lista, lista_item, pedido_item).
 - `conexao.py`: responsável pela conexão com o banco de dados.
 - `index.py`: ponto de entrada do sistema.
 
