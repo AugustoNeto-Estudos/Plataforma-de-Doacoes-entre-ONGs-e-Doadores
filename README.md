@@ -17,6 +17,6 @@ Este repositório contém os códigos da entrega obrigatória do dia **15/09**, 
 
 ## Status da entrega
 
- Código validado pelo orientador  
+☐ Código validado pelo orientador  
 ✅ Branch separada criada: `entrega-15-09`  
 ⏳ Aguardando link do vídeo demonstrativo
