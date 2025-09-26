@@ -1,40 +1,41 @@
 # Plataforma-de-Doacoes-entre-ONGs-e-Doadores
-Sistema de Doações Comunitárias.
-📌 SolidariHub
+# 📦 Entrega PFC – Login e Documentação (29/09)
 
-O SolidariHub é uma plataforma web que conecta ONGs e doadores de forma simples, segura e transparente.
-Nosso objetivo é facilitar o processo de doação, tornando-o mais organizado e confiável, tanto para quem doa quanto para quem recebe.
+Este repositório contém os códigos e documentos referentes à entrega obrigatória do dia *29/09*, conforme orientação do professor supervisor.  
 
-🚀 Funcionalidades principais
+---
 
-Cadastro de Usuários: ONGs e Doadores podem se cadastrar e acessar o sistema.
+## ✅ Funcionalidades entregues
 
-Gerenciamento de Itens e Listas: ONGs criam listas de itens necessários, organizadas por categoria e quantidade.
+- *Login completo*  
+  - Autenticação de usuários com banco de dados  
+  - Criptografia de senhas para maior segurança  
+  - Controle de acesso por perfil de usuário  
+  - Implementação considerando as implicações da *LGPD*, incluindo exclusão definitiva de dados de usuários  
 
-Intenção de Doação: Doadores podem demonstrar interesse em doar para listas específicas.
+---
 
-Pedidos de Doação: Quando ONG e Doador confirmam a intenção, o sistema gera um pedido formal.
 
-Histórico e Acompanhamento: Possibilidade de acompanhar status de listas, intenções e pedidos de doações.
+## 🎥 Demonstração em vídeo
 
-🗂️ Entidades principais
+Abaixo está o vídeo demonstrativo da funcionalidade de login e do sistema atualizado.  
 
-ONG: informações cadastrais, status de verificação e descrição.
 
-Doador: informações básicas para login e contato.
 
-Item: categorias e subcategorias de itens.
+https://github.com/user-attachments/assets/c57f4a8d-ff22-4c6b-99ae-f29b00172e13
 
-Lista: criada pela ONG, agrupa os itens que ela precisa.
 
-Intenção de Doação: registro de interesse do doador em atender uma lista.
 
-Pedido: confirmação de doação após aceite da ONG e doador.
+---
 
-🛠️ Tecnologias utilizadas
+## 🗂 Estrutura do repositório
 
-Linguagem: Python
+Plataforma-de-Doacoes-entre-ONGs-e-Doadores/ ├── pages/ │ ├── login.py │ ├── conexao.py │ └── ... ├── docs/ │ └── Sistema_de_Doacoes_Introducao.pdf ├── index.py └── README.md
 
-Banco de Dados: PostgreSQL (RDS AWS)
+Código
 
-Bibliotecas: psycopg2, Streamlit
+---
+
+## 📌 Observações
+
+- Esta entrega foi feita na branch entrega-29-09, conforme solicitado.
