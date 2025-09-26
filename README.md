@@ -9,6 +9,10 @@ Nosso objetivo é facilitar o processo de doação, tornando-o mais organizado e
 
 Cadastro de Usuários: ONGs e Doadores podem se cadastrar e acessar o sistema.
 
+
+https://github.com/user-attachments/assets/7d13dc35-d15c-47c7-8c38-6c9d0b4672f4
+
+
 Gerenciamento de Itens e Listas: ONGs criam listas de itens necessários, organizadas por categoria e quantidade.
 
 Intenção de Doação: Doadores podem demonstrar interesse em doar para listas específicas.
