@@ -1,40 +1,49 @@
-# Plataforma-de-Doacoes-entre-ONGs-e-Doadores
-Sistema de Doações Comunitárias.
-📌 SolidariHub
+# SolidariHUb Plataforma-de-Doacoes-entre-ONGs-e-Doadores
+ SolidariHub - Sistema de Doações Comunitárias.
 
-O SolidariHub é uma plataforma web que conecta ONGs e doadores de forma simples, segura e transparente.
-Nosso objetivo é facilitar o processo de doação, tornando-o mais organizado e confiável, tanto para quem doa quanto para quem recebe.
+O SolidariHub é uma plataforma web que conecta ONGs e doadores de forma simples, segura e transparente. Nosso objetivo é organizar e facilitar o processo de doação, garantindo mais confiança e clareza tanto para quem doa quanto para quem recebe.
 
 🚀 Funcionalidades principais
+Cadastro de Usuários: ONGs e Doadores podem se registrar e acessar o sistema com segurança.
 
-Cadastro de Usuários: ONGs e Doadores podem se cadastrar e acessar o sistema.
+Gerenciamento de Listas de Necessidades: ONGs criam listas de itens organizados por categoria, subcategoria e quantidade necessária.
 
-Gerenciamento de Itens e Listas: ONGs criam listas de itens necessários, organizadas por categoria e quantidade.
+Intenções de Doação: Doadores demonstram interesse em doar itens de uma lista específica.
 
-Intenção de Doação: Doadores podem demonstrar interesse em doar para listas específicas.
+Aprovação pela ONG: A ONG pode aprovar, reprovar ou reverter intenções de doação, adicionando observações.
 
-Pedidos de Doação: Quando ONG e Doador confirmam a intenção, o sistema gera um pedido formal.
+Pedidos de Doação: Quando a intenção é aprovada e confirmada pelo doador, o sistema gera automaticamente um pedido formal.
 
-Histórico e Acompanhamento: Possibilidade de acompanhar status de listas, intenções e pedidos de doações.
+Histórico e Acompanhamento: Doadores e ONGs acompanham o status de intenções e pedidos em tempo real.
+
+Perfis de ONGs: Doadores podem visualizar o perfil completo de uma ONG (informações, campanhas ativas, avaliações e feedbacks).
+
+Feedbacks: Doadores podem avaliar pedidos concluídos e listas, ajudando a construir reputação e transparência.
+
+Notificações no Menu: Doadores visualizam rapidamente quantas intenções e pedidos estão pendentes, aprovados ou em andamento.
 
 🗂️ Entidades principais
+ONG: dados cadastrais, status de verificação, descrição, campanhas criadas e avaliações recebidas.
 
-ONG: informações cadastrais, status de verificação e descrição.
+Doador: informações básicas para login, contato e histórico de doações.
 
-Doador: informações básicas para login e contato.
+Item: categorias e subcategorias de produtos que podem ser doados.
 
-Item: categorias e subcategorias de itens.
+Lista: criada pela ONG, agrupa os itens necessários em uma campanha de arrecadação.
 
-Lista: criada pela ONG, agrupa os itens que ela precisa.
+Intenção de Doação: registro do interesse do doador em atender uma lista, com status (Pendente, Aprovado, Reprovado, Finalizado).
 
-Intenção de Doação: registro de interesse do doador em atender uma lista.
+Pedido: confirmação formal da doação, gerado a partir de uma intenção aprovada e confirmada.
 
-Pedido: confirmação de doação após aceite da ONG e doador.
+Feedback: avaliações e comentários feitos pelos doadores sobre pedidos e listas.
 
 🛠️ Tecnologias utilizadas
-
 Linguagem: Python (Flask)
 
 Banco de Dados: PostgreSQL (RDS AWS)
 
 Bibliotecas: psycopg2, bcrypt
+
+Frontend: HTML5, CSS3, JavaScript
+
+Integrações: busca de CEP, sistema de e-mails para recuperação de senha
