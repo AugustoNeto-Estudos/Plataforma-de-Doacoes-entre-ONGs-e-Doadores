@@ -33,8 +33,8 @@ Pedido: confirmação de doação após aceite da ONG e doador.
 
 🛠️ Tecnologias utilizadas
 
-Linguagem: Python
+Linguagem: Python (Flask)
 
 Banco de Dados: PostgreSQL (RDS AWS)
 
-Bibliotecas: psycopg2, Streamlit
+Bibliotecas: psycopg2, bcrypt
