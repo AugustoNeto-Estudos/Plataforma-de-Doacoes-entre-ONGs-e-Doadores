@@ -1,0 +1,135 @@
+/* Layout principal */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.logo-img {
+  height: 100px;
+  margin-bottom: 10px;
+  margin-left: -40px; /* puxa 10px para a esquerda */
+}
+
+/* Seção do formulário */
+.form-section {
+  flex: 1;
+  background: #fff;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #232f3e;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #232f3e;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px; /* espaço pro ícone */
+}
+
+.password-container .toggle-password {
+  position: absolute;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.btn {
+  padding: 14px;
+  background: #ff9900;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: #e68a00;
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #f4f6f8;        /* fundo cinza claro */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: bold;          /* texto em negrito */
+  color: #333;                /* cinza escuro */
+  text-decoration: none;      /* remove sublinhado */
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #e9eef3;        /* muda o fundo no hover */
+}
+
+.link {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #0073e6;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Seção da imagem */
+.image-section {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+}
+
+#image-login {
+  background-size: cover;
+  background-position: center;
+}
+
+#image-cadastro {
+  background-image: url("https://images.pexels.com/photos/6647119/pexels-photo-6647119.jpeg");
+  background-size: cover;
+  background-position: center;
+}

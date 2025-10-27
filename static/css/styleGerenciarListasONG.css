@@ -1,0 +1,183 @@
+/* Background geral */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: url("https://images.pexels.com/photos/7130566/pexels-photo-7130566.jpeg") no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Container central */
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 12px;
+}
+
+/* Botão voltar */
+.btn-voltar {
+  display: inline-block;
+  margin: 15px;
+  padding: 10px 20px;
+  background-color: #ffd814;
+  border: 1px solid #fcd200;
+  color: #111;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+.btn-voltar:hover {
+  background-color: #f7ca00;
+}
+
+/* Cards */
+.card {
+  background-color: #fff;
+  border: 1px solid #d0d7e2;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Inputs e selects */
+form input[type="text"],
+form input[type="number"],
+form textarea,
+form select,
+.choices {
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+  padding: 10px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccd6dd;
+  font-size: 0.95rem;
+}
+
+/* Barra de busca/filtro */
+.filter-inline {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 20px 0;
+}
+.filter-inline input[type="text"],
+.filter-inline select {
+  max-width: 300px;
+}
+
+/* Choices.js */
+.choices__inner {
+  border-radius: 8px !important;
+  border: 1px solid #ccd6dd !important;
+  padding: 8px 10px !important;
+  min-height: 44px;
+  background: #fff;
+}
+.choices__list--multiple .choices__item {
+  background-color: #eef3ff;
+  border: 1px solid #c7d2fe;
+  color: #111;
+  border-radius: 20px;
+  padding: 4px 8px;
+  margin: 2px;
+}
+.choices[data-type*="select-multiple"] .choices__button {
+  border-left: none;
+  background: transparent;
+  color: #555;
+  font-size: 0.8rem;
+}
+
+/* Item expansível */
+.item-expander {
+  background: #f9fbfc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+.item-expander > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.item-expander > summary::-webkit-details-marker {
+  display: none;
+}
+.item-expander > summary:after {
+  content: "▾";
+  float: right;
+  color: #6b7280;
+}
+
+/* Botões */
+button,
+.btn-amazon,
+.btn-secondary,
+.btn-danger {
+  font-weight: bold;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  border: 1px solid transparent;
+}
+
+/* Estilo Amazon */
+.btn-amazon {
+  background-color: #ffd814;
+  border-color: #fcd200;
+  color: #111;
+}
+.btn-amazon:hover {
+  background-color: #f7ca00;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: #f0f2f2;
+  border-color: #d5d9d9;
+  color: #111;
+}
+.btn-secondary:hover {
+  background-color: #e3e6e6;
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  border-color: #c9302c;
+  color: #fff;
+}
+.btn-danger:hover {
+  background-color: #c9302c;
+  transform: translateY(-1px);
+}
+
+/* Flash messages */
+.flash-messages {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 16px;
+}
+.flash-messages li {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* Helpers */
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 20px 0;
+}

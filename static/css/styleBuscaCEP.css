@@ -1,0 +1,260 @@
+/* === Estilo base === */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* === Container === */
+.container {
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* === Títulos === */
+h1 {
+  text-align: center;
+  color: #232f3e;
+  margin-bottom: 30px;
+}
+
+h2, h3, h4 {
+  color: #3a4a63;
+  margin-top: 20px;
+}
+
+/* === Botão voltar === */
+.btn-voltar {
+  display: inline-block;
+  margin: 20px 40px;
+  padding: 10px 20px;
+  background-color: #ffd814;
+  border: 1px solid #fcd200;
+  color: #111;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+.btn-voltar:hover {
+  background-color: #f7ca00;
+}
+
+/* === Formulário de busca === */
+.busca-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+  align-items: center;
+}
+
+.busca-form input[type="text"] {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+  font-size: 15px;
+  background-color: #fff;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 10px 16px;
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.button-group button:hover {
+  background-color: #e68a00;
+}
+
+.busca-form button {
+  padding: 12px 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-amazon {
+  background-color: #ffd814;
+  border: 1px solid #fcd200;
+  color: #111;
+}
+.btn-amazon:hover {
+  background-color: #f7ca00;
+}
+
+.btn-secondary {
+  background-color: #f0f2f2;
+  border: 1px solid #d5d9d9;
+  color: #111;
+}
+.btn-secondary:hover {
+  background-color: #e3e6e6;
+}
+
+/* === Mensagens de alerta === */
+.flash-messages {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.flash-messages li {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+/* === Endereço encontrado === */
+.endereco,
+.endereco-info {
+  background-color: #e7f3fe;
+  color: #31708f;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* === Cartões de resultado === */
+.card {
+  background-color: white;
+  border: 1px solid #d0d7e2;
+  border-left: 6px solid #2c7be5;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #ff9900;
+}
+
+.card p {
+  margin: 6px 0;
+}
+
+.card button {
+  margin-top: 10px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* === Mensagem de nenhum resultado === */
+.info {
+  background-color: #fcf8e3;
+  color: #8a6d3b;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* === Modal flutuante === */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.menu-btn, .logout-btn {
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.menu-btn {
+  background-color: #ff9900;
+  color: white;
+}
+.menu-btn:hover {
+  background-color: #e68a00;
+}
+
+.logout-btn {
+  background-color: #ccc;
+  color: #333;
+}
+.logout-btn:hover {
+  background-color: #999;
+}
+
+/* === Itens da lista === */
+.item-doacao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.item-doacao span {
+  flex: 1;
+}
+
+.item-doacao input[type="number"] {
+  width: 80px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
