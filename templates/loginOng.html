@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>SolidariHub - Login/Cadastro ONG</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleLoginONG.css') }}">
+</head>
+<body>
+  <div class="container">
+    <!-- LOGIN ONG -->
+    <div class="form-section" id="login-form-section">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='img/SolidariHub_logo_escrito_azul.png') }}" 
+            alt="SolidariHub" class="logo-img">
+      </div>
+      <h2>Login de ONGs</h2>
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="flash-messages">
+            {% for msg in messages %}
+              <li>{{ msg }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="/LoginONG">
+        <input type="hidden" name="acao" value="login">
+        <input type="email" name="email" placeholder="Email da ONG" required>
+        <div class="password-container">
+          <input type="password" id="senhaLoginONG" name="senha" placeholder="Senha" required>
+          <img src="{{ url_for('static', filename='img/icone-oculte.png') }}" 
+              alt="Mostrar/Ocultar Senha" 
+              class="toggle-password" 
+              onclick="togglePassword('senhaLoginONG', this)">
+        </div>
+        <button type="submit" class="btn">Entrar</button>
+      </form>
+
+      <a href="{{ url_for('recuperar_senha.recuperar_senha') }}" class="link">Esqueceu sua senha?</a>
+      <hr>
+      <p>Ainda não tem conta?</p>
+      <a href="#" onclick="mostrarCadastro()" class="btn-secondary">Cadastre sua ONG</a>
+    </div>
+
+    <div class="image-section" id="image-login"></div>
+
+    <!-- CADASTRO ONG -->
+    <div class="image-section" id="image-cadastro" style="display:none;"></div>
+    <div class="form-section" id="cadastro-form-section" style="display:none;">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='img/SolidariHub_logo_escrito_azul.png') }}" 
+            alt="SolidariHub" class="logo-img">
+      </div>
+      <h2>Cadastro de ONGs</h2>
+
+      <form method="POST" action="/LoginONG">
+        <input type="hidden" name="acao" value="cadastro">
+        <input type="text" name="cnpj" placeholder="CNPJ (somente números)" required>
+        <input type="text" name="nome" placeholder="Nome da Instituição" required>
+        <input type="text" name="cep" placeholder="CEP (somente números)">
+        <input type="tel" name="contato" placeholder="Contato (DDD+Número)">
+        <input type="email" name="email" placeholder="Email" required>
+        <div class="password-container">
+          <input type="password" id="senhaCadastroONG" name="senha" placeholder="Senha" required>
+          <img src="{{ url_for('static', filename='img/icone-oculte.png') }}" 
+              alt="Mostrar/Ocultar Senha" 
+              class="toggle-password" 
+              onclick="togglePassword('senhaCadastroONG', this)">
+        </div>
+        <textarea name="descricao" placeholder="Descrição da Instituição"></textarea>
+        <button type="submit" class="btn">Cadastrar</button>
+      </form>
+
+      <hr>
+      <p>Já tem conta?</p>
+      <a href="#" onclick="mostrarLogin()" class="btn-secondary">Voltar para Login</a>
+    </div>
+  </div>
+
+  <script>
+    function mostrarCadastro() {
+      document.getElementById("login-form-section").style.display = "none";
+      document.getElementById("image-login").style.display = "none";
+      document.getElementById("cadastro-form-section").style.display = "flex";
+      document.getElementById("image-cadastro").style.display = "block";
+    }
+    function mostrarLogin() {
+      document.getElementById("cadastro-form-section").style.display = "none";
+      document.getElementById("image-cadastro").style.display = "none";
+      document.getElementById("login-form-section").style.display = "flex";
+      document.getElementById("image-login").style.display = "block";
+    }
+  </script>
+
+  <script>
+    function togglePassword(inputId, icon) {
+      const input = document.getElementById(inputId);
+      if (input.type === "password") {
+        input.type = "text";
+        icon.src = "{{ url_for('static', filename='img/icone-olho.png') }}";
+      } else {
+        input.type = "password";
+        icon.src = "{{ url_for('static', filename='img/icone-oculte.png') }}";
+      }
+    }
+  </script>
+
+</body>
+</html>

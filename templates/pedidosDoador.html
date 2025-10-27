@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Meus Pedidos | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stylePedidosDoador.css') }}">
+</head>
+<body>
+  <!-- Botão voltar -->
+  <a href="{{ url_for('menu_doador.menu_doador') }}" class="btn-voltar">← Voltar ao Menu Doador</a>
+
+  <div class="container">
+    <h1>📦 Meus Pedidos</h1>
+
+    <!-- Mensagens de sucesso/erro -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, msg in messages %}
+            <div class="flash {{ category }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Filtros -->
+    <form method="POST" class="filtros-form">
+      <select name="status">
+        <option value="Todos" {% if status_selecionado == "Todos" %}selected{% endif %}>Todos</option>
+        <option value="Em andamento" {% if status_selecionado == "Em andamento" %}selected{% endif %}>⏳ Em andamento</option>
+        <option value="Finalizado" {% if status_selecionado == "Finalizado" %}selected{% endif %}>✅ Finalizado</option>
+        <option value="Cancelado" {% if status_selecionado == "Cancelado" %}selected{% endif %}>❌ Cancelado</option>
+      </select>
+      <input type="text" name="busca" placeholder="🔍 Buscar por ONG ou Campanha" value="{{ busca }}">
+      <button type="submit" class="btn-amazon">Filtrar</button>
+    </form>
+
+    {% macro render_pedidos(lista, status) %}
+      {% if lista %}
+        <h2>{{ status }}</h2>
+        {% for p in lista %}
+          {% set lista_sel = mapa_listas.get(p.get('ID_Lista'), {}) %}
+          {% set ong_sel = mapa_ongs.get(p.get('ID_ONG'), {}) %}
+          <div class="card">
+            <p><strong>Campanha:</strong> {{ lista_sel.get('titulo', 'Campanha não encontrada') }}</p>
+            <p><strong>ONG:</strong> {{ ong_sel.get('nome', 'N/A') }}</p>
+            <p><strong>Status:</strong> {{ STATUS_MAP.get(p["status"], 'Desconhecido') }}</p>
+            <p><strong>Data:</strong> {{ p["data_criacao"] }}</p>
+
+            {% set itens = exibir_pedidos_itens(p["ID_Pedido"]) %}
+            {% if itens %}
+              <h4>Itens do pedido:</h4>
+              <ul>
+                {% for item in itens %}
+                  {% set det = mapa_itens.get(item.ID_Item, {}) %}
+                  <li>
+                    {{ det.get('categoria', 'Item') }} - {{ det.get('subcategoria', '') }}: {{ item.quantidade }} unidades
+                    {% if item.observacao %}
+                      <br><small>📝 {{ item.observacao }}</small>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if p.status in [1, 2] and not mapa_feedbacks.get(p["ID_Pedido"]) %}
+              <button type="button" class="btn-avaliar"
+                onclick="abrirModalFeedback('{{ p.ID_Pedido }}','{{ p.ID_ONG }}','{{ p.ID_Lista }}')">
+                ⭐ Avaliar Doação
+              </button>
+            {% elif mapa_feedbacks.get(p.ID_Pedido) %}
+              <p class="info">✅ Você já avaliou este pedido.</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="info">Nenhum pedido encontrado nesta seção.</p>
+      {% endif %}
+    {% endmacro %}
+
+    <!-- Renderização condicional -->
+    {% if status_selecionado == "Todos" %}
+      {{ render_pedidos(em_andamento, "⏳ Pedidos em andamento") }}
+      {{ render_pedidos(finalizados, "✅ Pedidos finalizados") }}
+      {{ render_pedidos(cancelados, "❌ Pedidos cancelados") }}
+    {% elif status_selecionado == "Em andamento" %}
+      {{ render_pedidos(em_andamento, "⏳ Pedidos em andamento") }}
+    {% elif status_selecionado == "Finalizado" %}
+      {{ render_pedidos(finalizados, "✅ Pedidos finalizados") }}
+    {% elif status_selecionado == "Cancelado" %}
+      {{ render_pedidos(cancelados, "❌ Pedidos cancelados") }}
+    {% endif %}
+  </div>
+
+  <!-- Modal Avaliar Doação -->
+  <div id="modal-feedback" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <a href="javascript:void(0)" class="close-x" onclick="fecharModal('modal-feedback')">×</a>
+      <h2>⭐ Avaliar Doação</h2>
+      <form method="POST" action="{{ url_for('feedback.novo_feedback') }}">
+        <input type="hidden" name="id_pedido" id="id_pedido_feedback">
+        <input type="hidden" name="id_ong" id="id_ong_feedback">
+        <input type="hidden" name="id_lista" id="id_lista_feedback">
+        <input type="hidden" name="nota" id="nota_feedback">
+
+        <!-- Estrelas -->
+        <label>Sua nota:</label>
+        <div class="star-rating">
+          <span data-value="1">★</span>
+          <span data-value="2">★</span>
+          <span data-value="3">★</span>
+          <span data-value="4">★</span>
+          <span data-value="5">★</span>
+        </div>
+
+        <!-- Reação -->
+        <label>Você gostou da campanha?</label>
+        <div class="reaction-buttons">
+          <button type="button" class="reaction" data-value="true">👍</button>
+          <button type="button" class="reaction" data-value="false">👎</button>
+        </div>
+        <input type="hidden" name="reacao" id="reacao_feedback">
+
+        <!-- Comentário (inicialmente escondido) -->
+        <div id="comentario-container" style="display:none;">
+          <label>Comentário:</label>
+          <textarea name="comentario" rows="3" placeholder="Escreva seu comentário..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-avaliar">Enviar Avaliação</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function abrirModalFeedback(idPedido, idOng, idLista) {
+      document.getElementById("id_pedido_feedback").value = idPedido;
+      document.getElementById("id_ong_feedback").value = idOng;
+      document.getElementById("id_lista_feedback").value = idLista;
+      document.getElementById("modal-feedback").style.display = "flex";
+    }
+    function fecharModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    // Estrelas interativas
+    document.addEventListener("DOMContentLoaded", () => {
+      const stars = document.querySelectorAll(".star-rating span");
+      const notaInput = document.getElementById("nota_feedback");
+      stars.forEach(star => {
+        star.addEventListener("mouseover", () => {
+          stars.forEach(s => s.classList.remove("hover"));
+          let value = star.getAttribute("data-value");
+          stars.forEach(s => {
+            if (s.getAttribute("data-value") <= value) s.classList.add("hover");
+          });
+        });
+        star.addEventListener("mouseout", () => {
+          stars.forEach(s => s.classList.remove("hover"));
+        });
+        star.addEventListener("click", () => {
+          let value = star.getAttribute("data-value");
+          notaInput.value = value;
+          stars.forEach(s => s.classList.remove("selected"));
+          stars.forEach(s => {
+            if (s.getAttribute("data-value") <= value) s.classList.add("selected");
+          });
+        });
+      });
+
+      // Reações
+      const reactions = document.querySelectorAll(".reaction");
+      const reacaoInput = document.getElementById("reacao_feedback");
+      const comentarioContainer = document.getElementById("comentario-container");
+      reactions.forEach(btn => {
+        btn.addEventListener("click", () => {
+          reactions.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          reacaoInput.value = btn.getAttribute("data-value");
+          comentarioContainer.style.display = "block";
+        });
+      });
+    });
+  </script>
+</body>
+</html>

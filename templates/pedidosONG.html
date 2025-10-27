@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedidos Recebidos | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stylePedidosONG.css') }}">
+</head>
+<body>
+  <!-- Botão voltar -->
+  <a href="{{ url_for('menu_ong.menu_ong') }}" class="btn-voltar">← Voltar ao Menu ONG</a>
+
+  <div class="container">
+    <h1>📦 Pedidos Recebidos</h1>
+
+    <!-- Mensagens de sucesso/erro -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, msg in messages %}
+            <div class="flash {{ category }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Filtros -->
+    <form method="POST" class="filtros-form">
+      <select name="status">
+        <option value="Todos" {% if status_selecionado == "Todos" %}selected{% endif %}>Todos</option>
+        <option value="Em andamento" {% if status_selecionado == "Em andamento" %}selected{% endif %}>⏳ Em andamento</option>
+        <option value="Finalizado" {% if status_selecionado == "Finalizado" %}selected{% endif %}>✅ Finalizado</option>
+        <option value="Cancelado" {% if status_selecionado == "Cancelado" %}selected{% endif %}>❌ Cancelado</option>
+      </select>
+      <input type="text" name="busca" placeholder="🔍 Buscar por Doador ou Campanha" value="{{ busca }}">
+      <button type="submit" class="btn-amazon">Filtrar</button>
+    </form>
+
+    {% macro render_pedidos(lista, status) %}
+      {% if lista %}
+        <h2>{{ status }}</h2>
+        {% for p in lista %}
+          {% set lista_sel = mapa_listas.get(p.get('ID_Lista'), {}) %}
+          {% set doador_sel = mapa_doadores.get(p.get('ID_Doador'), {}) %}
+          <div class="card">
+            <p><strong>Campanha:</strong> {{ lista_sel.get('titulo', 'Campanha não encontrada') }}</p>
+            <p><strong>Doador:</strong> {{ doador_sel.get('nome', 'N/A') }}</p>
+            <p><strong>Status:</strong> {{ STATUS_MAP.get(p.status, 'Desconhecido') }}</p>
+            <p><strong>Data:</strong> {{ p.data_criacao }}</p>
+
+            {% set itens = exibir_pedidos_itens(p.ID_Pedido) %}
+            {% if itens %}
+              <h4>Itens do pedido:</h4>
+              <ul>
+                {% for item in itens %}
+                  {% set det = mapa_itens.get(item.ID_Item, {}) %}
+                  <li>
+                    {{ det.get('categoria', 'Item') }} - {{ det.get('subcategoria', '') }}: {{ item.quantidade }} unidades
+                    {% if item.observacao %}
+                      <br><small>📝 {{ item.observacao }}</small>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if p.status == 0 %}
+              <button type="button" class="btn-amazon"
+                onclick="abrirModalFinalizar('{{ p.ID_Pedido }}','{{ doador_sel.get('nome','') }}')">
+                ✅ Finalizar Pedido
+              </button>
+              <button type="button" class="btn-danger"
+                onclick="abrirModalCancelar('{{ p.ID_Pedido }}')">
+                ❌ Cancelar Pedido
+              </button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="info">Nenhum pedido encontrado nesta seção.</p>
+      {% endif %}
+    {% endmacro %}
+
+    {% if status_selecionado == "Todos" %}
+      {{ render_pedidos(em_andamento, "⏳ Pedidos em andamento") }}
+      {{ render_pedidos(finalizados, "✅ Pedidos finalizados") }}
+      {{ render_pedidos(cancelados, "❌ Pedidos cancelados") }}
+    {% elif status_selecionado == "Em andamento" %}
+      {{ render_pedidos(em_andamento, "⏳ Pedidos em andamento") }}
+    {% elif status_selecionado == "Finalizado" %}
+      {{ render_pedidos(finalizados, "✅ Pedidos finalizados") }}
+    {% elif status_selecionado == "Cancelado" %}
+      {{ render_pedidos(cancelados, "❌ Pedidos cancelados") }}
+    {% endif %}
+  </div>
+
+  <!-- Modal Finalizar Pedido -->
+  <div id="modal-finalizar" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <a href="javascript:void(0)" class="close-x" onclick="fecharModal('modal-finalizar')">×</a>
+      <h2>⚠️ Confirmar Finalização</h2>
+      <p id="texto-finalizar" class="warning-text"></p>
+      <form method="GET" id="form-finalizar">
+        <button type="submit" class="btn-confirmar">✅ Confirmar Finalização</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Cancelar Pedido -->
+  <div id="modal-cancelar" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <a href="javascript:void(0)" class="close-x" onclick="fecharModal('modal-cancelar')">×</a>
+      <h2>⚠️ Confirmar Cancelamento</h2>
+      <p class="warning-text">Tem certeza que deseja cancelar este pedido?</p>
+      <form method="GET" id="form-cancelar">
+        <button type="submit" class="btn-cancelar">❌ Confirmar Cancelamento</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function abrirModalFinalizar(idPedido, nomeDoador) {
+      document.getElementById("texto-finalizar").innerText =
+        `Ao finalizar o pedido, você está conforme que a entrega dos itens que o doador ${nomeDoador} fez está de acordo com o combinado que vocês fizeram.`;
+      document.getElementById("form-finalizar").action = "/FinalizarPedido/" + idPedido;
+      document.getElementById("modal-finalizar").style.display = "flex";
+    }
+
+    function abrirModalCancelar(idPedido) {
+      document.getElementById("form-cancelar").action = "/CancelarPedido/" + idPedido;
+      document.getElementById("modal-cancelar").style.display = "flex";
+    }
+
+    function fecharModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+  </script>
+</body>
+</html>

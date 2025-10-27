@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscar ONGs | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleBuscaCEP.css') }}">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <a href="{{ url_for('menu_doador.menu_doador') }}" class="btn-voltar">← Voltar ao Menu</a>
+
+  <div class="container">
+    <h1>🔍 Buscar ONGs por CEP ou Palavra-chave</h1>
+
+    <form method="POST" class="busca-form">
+      <input type="text" name="busca" placeholder="Ex: 00000000 ou alimento, brinquedo..." value="{{ termo }}">
+      <button type="submit" name="acao" value="buscar" class="btn-amazon">Buscar</button>
+      <button type="submit" name="acao" value="listar_todas" class="btn-secondary">Ver todas as ONGs</button>
+    </form>
+
+    {% if endereco %}
+      <div class="endereco-info">
+        <h2>📍 Localização do CEP</h2>
+        <p><strong>Endereço:</strong> {{ endereco.endereco_completo }}</p>
+        {% if endereco.latitude and endereco.longitude %}
+          <p><strong>Coordenadas:</strong> {{ endereco.latitude }}, {{ endereco.longitude }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <h2>🏢 Resultados encontrados</h2>
+    {% if resultados %}
+      <div class="resultados">
+        {% for ong in resultados %}
+          <div class="card" onclick="abrirModal('{{ ong.CNPJ_ID | urlencode }}')" style="cursor: pointer;">
+            <h3>{{ ong.nome }}</h3>
+            <p><strong>CEP:</strong> {{ ong.cep or "Não informado" }}</p>
+            <p><strong>Descrição:</strong> {{ ong.descricao or "Sem descrição" }}</p>
+            <p><strong>Localização:</strong>
+              {% if ong.endereco_completo %}
+                {{ ong.endereco_completo }}
+              {% elif ong.bairro or ong.cidade %}
+                {{ ong.bairro }}, {{ ong.cidade }}
+              {% else %}
+                Não informada
+              {% endif %}
+            </p>
+            {% if ong.endereco_completo %}
+              {% set endereco_limpo = ong.endereco_completo.replace(',,', ',').strip(', ') %}
+              <button onclick="event.stopPropagation(); mostrarMapa('{{ endereco_limpo }}')" class="btn-amazon">📍 Ver no mapa</button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="info">Nenhuma ONG encontrada com esse critério.</p>
+    {% endif %}
+  </div>
+
+  <!-- Modal da ONG -->
+  <div id="modal-ong" class="modal-overlay">
+    <div class="modal-content">
+      <div id="modal-body"></div>
+      <div class="modal-actions">
+        <button onclick="fecharModal()" class="logout-btn">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal do Mapa -->
+  <div id="map-modal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 id="map-title">Localização da ONG</h3>
+      <div id="map-container" style="height: 400px;"></div>
+      <div class="modal-actions">
+        <button onclick="fecharMapa()" class="logout-btn">Fechar Mapa</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    function abrirModal(ongId) {
+      fetch(`/api/ong_detalhe/${ongId}`)
+        .then(res => res.json())
+        .then(data => {
+          const modalBody = document.getElementById("modal-body");
+          modalBody.innerHTML = `
+            <h2>🔎 ${data.nome}</h2>
+            <p><strong>CNPJ:</strong> ${data.CNPJ_ID}</p>
+            <p><strong>CEP:</strong> ${data.cep}</p>
+            <p><strong>Descrição:</strong> ${data.descricao || 'Não informada'}</p>
+            <h3>📋 Listas de Doação</h3>
+            ${data.listas.map(lista => `
+              <div class="card">
+                <h4>${lista.titulo}</h4>
+                <p>${lista.descricao}</p>
+                <form method="POST" action="/MenuDoador">
+                  <input type="hidden" name="lista_id" value="${lista.ID_Lista}">
+                  ${lista.itens.map(item => `
+                    <div class="item-doacao">
+                      <span>${item.categoria} - ${item.subcategoria}</span>
+                      <input type="hidden" name="item_id" value="${item.ID_Item}">
+                      <input type="number" name="qtd_${item.ID_Item}" min="1" max="${item.quantidade_necessaria}" required>
+                    </div>
+                  `).join('')}
+                  <button name="acao" value="confirmar_intencao" class="menu-btn">Tenho interesse em doar</button>
+                </form>
+              </div>
+            `).join('')}
+          `;
+          document.getElementById("modal-ong").style.display = "flex";
+        });
+    }
+
+    function fecharModal() {
+      document.getElementById("modal-ong").style.display = "none";
+    }
+
+    function mostrarMapa(endereco) {
+      const enderecoLimpo = endereco
+        .replace(/,+/g, ',')
+        .replace(/,\s*$/, '')
+        .trim();
+
+      fetch(`/api/localizacao?endereco=${encodeURIComponent(enderecoLimpo)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.latitude && data.longitude) {
+            document.getElementById("map-title").innerText = data.endereco;
+            document.getElementById("map-modal").style.display = "flex";
+
+            const mapDiv = document.getElementById("map-container");
+            mapDiv.innerHTML = "";
+
+            const map = L.map(mapDiv).setView([data.latitude, data.longitude], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '© OpenStreetMap'
+            }).addTo(map);
+            L.marker([data.latitude, data.longitude]).addTo(map)
+              .bindPopup(data.endereco).openPopup();
+          } else {
+            alert(data.erro || "Localização não encontrada.");
+          }
+        });
+    }
+
+    function fecharMapa() {
+      document.getElementById("map-modal").style.display = "none";
+    }
+  </script>
+</body>
+</html>

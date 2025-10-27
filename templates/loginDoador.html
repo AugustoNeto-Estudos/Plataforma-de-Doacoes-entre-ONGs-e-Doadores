@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>SolidariHub - Login/Cadastro</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleLoginDoador.css') }}">
+</head>
+<body>
+  <div class="container">
+    <!-- LOGIN -->
+    <div class="form-section" id="login-form-section">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='img/SolidariHub_logo_escrito_azul.png') }}" 
+            alt="SolidariHub" class="logo-img">
+      </div>
+      <h2>Login de Doadores</h2>
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="flash-messages">
+            {% for msg in messages %}
+              <li>{{ msg }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="/LoginDoador">
+        <input type="email" name="email" placeholder="Email" required>
+        <div class="password-container">
+          <input type="password" id="senhaLoginDoador" name="senha" placeholder="Senha" required>
+          <img src="{{ url_for('static', filename='img/icone-oculte.png') }}" 
+              alt="Mostrar/Ocultar Senha" 
+              class="toggle-password" 
+              onclick="togglePassword('senhaLoginDoador', this)">
+        </div>
+        <button type="submit" class="btn">Entrar</button>
+      </form>
+
+      <a href="{{ url_for('recuperar_senha.recuperar_senha') }}" class="link">Esqueceu sua senha?</a>
+      <hr>
+      <p>Ainda não tem conta?</p>
+      <a href="#" onclick="mostrarCadastro()" class="btn-secondary">Cadastre-se como Doador</a>
+    </div>
+
+    <div class="image-section" id="image-login"></div>
+
+    <!-- CADASTRO -->
+    <div class="image-section" id="image-cadastro" style="display:none;"></div>
+    <div class="form-section" id="cadastro-form-section" style="display:none;">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='img/SolidariHub_logo_escrito_azul.png') }}" 
+            alt="SolidariHub" class="logo-img">
+      </div>
+      <h2>Cadastro de Doadores</h2>
+
+      <form method="POST" action="/CadastroDoador">
+        <input type="text" name="cpf" placeholder="CPF Exemplo: 000.000.000-00" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required>
+        <input type="text" name="nome" placeholder="Nome" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="tel" name="contato" placeholder="Contato (DDD+Número)">
+        <div class="password-container">
+          <input type="password" id="senhaCadastroDoador" name="senha" placeholder="Senha" required>
+          <img src="{{ url_for('static', filename='img/icone-oculte.png') }}" 
+              alt="Mostrar/Ocultar Senha" 
+              class="toggle-password" 
+              onclick="togglePassword('senhaCadastroDoador', this)">
+        </div>
+        <button type="submit" class="btn">Cadastrar</button>
+      </form>
+
+      <hr>
+      <p>Já tem conta?</p>
+      <a href="#" onclick="mostrarLogin()" class="btn-secondary">Voltar para Login</a>
+    </div>
+
+    <script>
+      function mostrarCadastro() {
+        document.getElementById("login-form-section").style.display = "none";
+        document.getElementById("image-login").style.display = "none";
+        document.getElementById("cadastro-form-section").style.display = "flex";
+        document.getElementById("image-cadastro").style.display = "block";
+      }
+      function mostrarLogin() {
+        document.getElementById("cadastro-form-section").style.display = "none";
+        document.getElementById("image-cadastro").style.display = "none";
+        document.getElementById("login-form-section").style.display = "flex";
+        document.getElementById("image-login").style.display = "block";
+      }
+    </script>
+  </div>
+  <script>
+  // Lista de imagens possíveis
+  const imagensLogin = [
+    "https://images.pexels.com/photos/6995106/pexels-photo-6995106.jpeg",
+    "https://images.pexels.com/photos/6647119/pexels-photo-6647119.jpeg",
+    "https://images.pexels.com/photos/6646877/pexels-photo-6646877.jpeg",
+    "https://images.pexels.com/photos/6646874/pexels-photo-6646874.jpeg"
+  ];
+
+  // Escolhe uma aleatória
+  const escolhida = imagensLogin[Math.floor(Math.random() * imagensLogin.length)];
+
+  // Aplica no background
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("image-login").style.backgroundImage = `url('${escolhida}')`;
+  });
+</script>
+
+<script>
+  function togglePassword(inputId, icon) {
+    const input = document.getElementById(inputId);
+    if (input.type === "password") {
+      input.type = "text";
+      icon.src = "{{ url_for('static', filename='img/icone-olho.png') }}";
+    } else {
+      input.type = "password";
+      icon.src = "{{ url_for('static', filename='img/icone-oculte.png') }}";
+    }
+  }
+</script>
+
+</body>
+</html>

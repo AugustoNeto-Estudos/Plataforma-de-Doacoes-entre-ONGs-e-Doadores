@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil - {{ ong.nome }} | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stylePerfilONG.css') }}">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="profile-header">
+      <img src="https://cdn.pixabay.com/photo/2023/05/02/10/35/avatar-7964945_640.png" 
+           alt="Logo da ONG" class="profile-logo">
+      <div class="profile-title">
+        <h1>Perfil – {{ ong.nome }} {% if media_nota %}
+          – ⭐ {{ media_nota }}
+        {% endif %}</h1>
+        <span class="badge {{ 'ativa' if ong.status_conta else 'inativa' }}">
+          {{ "🟢 Ativa" if ong.status_conta else "🔴 Inativa" }}
+        </span>
+      </div>
+    </div>
+
+    <div class="profile-layout">
+      <!-- Coluna esquerda -->
+      <div class="profile-info card">
+        <h2>📋 Informações da ONG</h2>
+        <ul class="info-list">
+          <li><span class="icon">🏢</span> <strong>Nome:</strong> {{ ong.nome }}</li>
+          {% if media_nota %}
+            <li><span class="icon">⭐</span> <strong>Nota:</strong> {{ media_nota }}</li>
+          {% endif %}
+          <li><span class="icon">🆔</span> <strong>CNPJ:</strong> {{ ong.CNPJ_ID }}</li>
+          <li><span class="icon">📧</span> <strong>Email:</strong> {{ ong.email }}</li>
+          <li><span class="icon">📞</span> <strong>Contato:</strong> {{ ong.contato }}</li>
+          <li><span class="icon">📍</span> <strong>CEP:</strong> {{ ong.cep }}</li>
+          <li><span class="icon">📝</span> <strong>Descrição:</strong><br>{{ ong.descricao }}</li>
+        </ul>
+      </div>
+
+      <!-- Coluna direita -->
+      <div class="profile-lists card">
+        <h2>📦 Campanhas de Arrecadação</h2>
+        {% if listas %}
+          <ul class="lista-doacoes">
+            {% for lista in listas %}
+              <li class="lista-item">
+                <div class="lista-header">
+                  <strong>{{ lista.titulo }}</strong>
+                  <span class="status {{ 'ativa' if lista.status else 'finalizada' }}">
+                    {{ "Ativa" if lista.status else "Finalizada" }}
+                  </span>
+                </div>
+                <p>{{ lista.descricao }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty">ℹ️ Esta ONG ainda não criou campanhas de arrecadação.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Botão voltar -->
+    <div class="actions">
+      <a href="/MenuDoador" class="btn-secondary">← Voltar ao Menu do Doador</a>
+    </div>
+  </div>
+</body>
+</html>

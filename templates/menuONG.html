@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu ONG | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleMenuONG.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+</head>
+<body>
+  <!-- Header estilo Amazon -->
+  <header class="header">
+    <div class="header-container">
+      <span class="logo">SolidariHub</span>
+      <nav class="nav-links">
+        <a href="/PerfilONG">👤 Meu Perfil</a>
+
+        <!-- Botão de notificações -->
+        <div class="dropdown">
+          <button class="notif-btn {% if num_pendentes or num_aprovadas or num_pedidos %}highlight{% endif %}">
+            🔔 Notificações ⬇
+          </button>
+          <div class="dropdown-content">
+            {% if num_pendentes > 0 %}
+              <a href="/IntencoesONG">⏳ {{ num_pendentes }} intenção(ões) pendente(s)</a>
+            {% endif %}
+            {% if num_aprovadas > 0 %}
+              <a href="/IntencoesONG">⚡ {{ num_aprovadas }} intenção(ões) aprovada(s)</a>
+            {% endif %}
+            {% if num_pedidos > 0 %}
+              <a href="/PedidosONG">📦 {{ num_pedidos }} pedido(s) em andamento</a>
+            {% endif %}
+            {% if num_pendentes == 0 and num_aprovadas == 0 and num_pedidos == 0 %}
+              <span class="no-notif">Nenhuma notificação</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Botões dinâmicos -->
+        <a href="/GerenciarListasONG">📋 Gerenciar Campanhas</a>
+        <a href="/IntencoesONG" class="{% if num_pendentes or num_aprovadas %}highlight{% endif %}">
+          🎁 Intenções de Doação
+        </a>
+        <a href="/PedidosONG" class="{% if num_pedidos %}highlight{% endif %}">
+          📦 Pedidos Recebidos
+        </a>
+        <a href="/" class="btn-voltar">Sair</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Toasts -->
+  <div id="toast-container"></div>
+  <script>
+    function showToast(msg, type="info") {
+      const toast = document.createElement("div");
+      toast.className = "toast " + type;
+      toast.innerText = msg;
+      document.getElementById("toast-container").appendChild(toast);
+      setTimeout(() => toast.remove(), 5000);
+    }
+
+    const numPendentes = {{ num_pendentes }};
+    const numAprovadas = {{ num_aprovadas }};
+    const numPedidos = {{ num_pedidos }};
+
+    if (numPendentes > 0) {
+      showToast(`⏳ Você tem ${numPendentes} intenção(ões) pendente(s).`, "warning");
+    }
+    if (numAprovadas > 0) {
+      showToast(`⚡ Você tem ${numAprovadas} intenção(ões) aprovada(s).`, "info");
+    }
+    if (numPedidos > 0) {
+      showToast(`📦 Você tem ${numPedidos} pedido(s) em andamento.`, "success");
+    }
+  </script>
+
+  <div class="container">
+    <h1>🏠 Bem-vindo(a), {{ ong.nome }}</h1>
+
+    <!-- Criar nova lista rápida -->
+    <div class="card">
+      <h2>➕ Criar Campanha de Arrecadação Rápida</h2>
+      <form method="POST" id="form-criar-lista">
+        <input type="hidden" name="acao" value="criar_lista_rapida">
+        <input type="text" name="titulo" placeholder="Título da campanha" required>
+        <textarea name="descricao" placeholder="Descrição da campanha" rows="3"></textarea>
+
+        <h4>Escolha os itens do catálogo</h4>
+        <select id="item-select" name="item_id" multiple required>
+          {% for item in catalogo %}
+            <option value="{{ item.ID_Item }}">{{ item.categoria }} - {{ item.subcategoria or "Sem subcategoria" }}</option>
+          {% endfor %}
+        </select>
+
+        <!-- Campos de quantidade gerados dinamicamente -->
+        <div id="quantidades-container"></div>
+
+        <button type="submit" class="btn-amazon">Criar Campanha</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Choices.js -->
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const select = document.getElementById('item-select');
+      const container = document.getElementById('quantidades-container');
+
+      const choices = new Choices(select, {
+        removeItemButton: true,
+        searchPlaceholderValue: 'Buscar item...',
+        noResultsText: 'Nenhum item encontrado',
+        itemSelectText: 'Clique para selecionar'
+      });
+
+      select.addEventListener('change', function() {
+        container.innerHTML = "";
+        const selecionados = Array.from(select.selectedOptions);
+        selecionados.forEach(opt => {
+          container.innerHTML += `
+            <div class="item-qtd">
+              <label>${opt.text}</label>
+              <input type="hidden" name="item_id" value="${opt.value}">
+              <input type="number" name="qtd_${opt.value}" min="1" value="1" required>
+            </div>
+          `;
+        });
+      });
+    });
+  </script>
+</body>
+</html>

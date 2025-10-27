@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu Doador | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleMenuDoador.css') }}">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <img src="static/img/SolidariHub_logo_escrito_amarelo.png" alt="SolidariHub" class="logo-img">
+      <nav class="nav-links">
+        <!-- Notificações -->
+        <div class="dropdown">
+          <button class="notif-btn {% if pendentes or aprovadas or pedidos_andamento %}highlight{% endif %}">
+            <img src="static/img/icone-sino.png" alt="Notificações" class="menu-icon"> Notificações 
+            <img src="static/img/icone-seta-baixo.png" alt="Abrir" class="menu-icon">
+          </button>
+          <div class="dropdown-content">
+            {% if pendentes > 0 %}
+              <a href="/IntencoesDoador">
+                <img src="static/img/icone-ampulheta.png" alt="Pendentes" class="menu-icon">
+                {{ pendentes }} intenção(ões) pendente(s)
+              </a>
+            {% endif %}
+            {% if aprovadas > 0 %}
+              <a href="/IntencoesDoador">
+                <img src="static/img/icone-aprovado.png" alt="Aprovadas" class="menu-icon">
+                {{ aprovadas }} intenção(ões) aprovada(s)
+              </a>
+            {% endif %}
+            {% if pedidos_andamento > 0 %}
+              <a href="/PedidosDoador">
+                <img src="static/img/icone-andamento.png" alt="Pedidos em andamento" class="menu-icon">
+                {{ pedidos_andamento }} pedido(s) em andamento
+              </a>
+            {% endif %}
+            {% if pendentes == 0 and aprovadas == 0 and pedidos_andamento == 0 %}
+              <span class="no-notif">Nenhuma notificação</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <a href="/BuscaCEP">
+          <img src="static/img/icone-lupa.png" alt="Buscar ONG" class="menu-icon"> Buscar ONG
+        </a>
+
+        <a href="/IntencoesDoador" class="{% if pendentes or aprovadas %}highlight{% endif %}">
+          <img src="static/img/icone-intencao.png" alt="Minhas Intenções" class="menu-icon"> Minhas Intenções
+        </a>
+
+        <a href="/PedidosDoador" class="{% if andamento %}highlight{% endif %}">
+          <img src="static/img/icone-pedido.png" alt="Meus Pedidos" class="menu-icon"> Meus Pedidos
+        </a>
+
+        <a href="/" class="btn-voltar">Sair</a>
+
+      </nav>
+    </div>
+  </header>
+
+  <!-- Toasts -->
+  <div id="toast-container"></div>
+  <script>
+    function showToast(msg, type="info") {
+      const toast = document.createElement("div");
+      toast.className = "toast " + type;
+      toast.innerHTML = msg; // agora aceita <img>, <b>, etc.
+      document.getElementById("toast-container").appendChild(toast);
+      setTimeout(() => toast.remove(), 5000);
+    }
+    const numPendentes = {{ pendentes }};
+    const numAprovadas = {{ aprovadas }};
+    const numPedidos = {{ pedidos_andamento }};
+    if (numPendentes > 0) {
+      showToast(`<img src="static/img/icone-ampulheta.png" class="toast-icon"> Você tem ${numPendentes} intenção(ões) pendente(s).`, "warning");
+    }
+    if (numAprovadas > 0) {
+      showToast(`<img src="static/img/icone-aprovado.png" class="toast-icon"> Você tem ${numAprovadas} intenção(ões) aprovada(s).`,"info");
+    }
+    if (numPedidos > 0) {
+      showToast(`<img src="static/img/icone-andamento.png" class="toast-icon"> Você tem ${numPedidos} pedido(s) em andamento.`,"success");
+    }
+  </script>
+
+  <div class="container">
+    <h1> Bem-vindo(a), {{ doador.nome }}</h1>
+
+    {% if mensagem_menu %}
+      <div class="menu-alert">{{ mensagem_menu }}</div>
+    {% endif %}
+
+    <!-- Filtro -->
+    <div class="filtro-cep">
+      <form method="GET" action="/MenuDoador">
+        <input type="text" name="busca" placeholder="Digite CEP ou palavra-chave" value="{{ busca }}">
+        <button type="submit">Aplicar</button>
+        <a href="/MenuDoador"><button type="button">Limpar</button></a>
+      </form>
+    </div>
+
+    <h2>
+      <img src="static/img/icone-campanha.png" alt="Campanhas" class="menu-icon">
+      Campanhas de Arrecadação Ativas - Escolha uma para doar!
+    </h2>
+    {% for lista in listas %}
+      {% set ong = mapa_ongs.get(lista.ID_ONG) %}
+      <a href="/MenuDoador?abrir_modal={{ lista.ID_Lista }}" class="card-link">
+        <div class="card">
+          <h3>
+            <img src="static/img/icone-doacao.png" alt="Título" class="menu-icon">
+            {{ lista.titulo }}
+          </h3>
+          <p>{{ lista.descricao }}</p>
+          <small>ONG: {{ ong.nome }} • {{ ong.cep }} • {{ lista.data_criacao }}</small>
+        </div>
+      </a>
+    {% endfor %}
+
+    {% if lista_modal and ong_modal %}
+<div class="modal-overlay">
+  <div class="modal-content">
+    <a href="/MenuDoador?fechar_modal=1" class="close-x">×</a>
+
+    {% if ong_detalhe %}
+      <h2>🔎 Detalhes da ONG</h2>
+      <p><strong>Nome:</strong> {{ ong_detalhe.nome }}</p>
+      <p><strong>CNPJ:</strong> {{ ong_detalhe.CNPJ_ID }}</p>
+      <p><strong>CEP:</strong> {{ ong_detalhe.cep }}</p>
+      <p><strong>Descrição:</strong> {{ ong_detalhe.descricao or 'Não informada' }}</p>
+
+      <h3>📋 Listas da ONG</h3>
+      {% for lista in listas_ong_detalhe %}
+        <div class="card">
+          <h4>{{ lista.titulo }}</h4>
+          <p>{{ lista.descricao }}</p>
+          <form method="POST" class="form-intencao">
+            <input type="hidden" name="lista_id" value="{{ lista.ID_Lista }}">
+            <div class="form-alert" style="{% if not mensagem_modal %}display:none;{% endif %}">
+              {% if mensagem_modal %}{{ mensagem_modal }}{% endif %}
+            </div>
+            {% for item in lista.itens %}
+              {% set detalhes = mapa_itens.get(item.ID_Item) %}
+              <div class="item-doacao">
+                <span>{{ detalhes.categoria }} - {{ detalhes.subcategoria }}
+                  <small>(Necessário: {{ item.quantidade_necessaria }})</small>
+                </span>
+                <input type="hidden" name="item_id" value="{{ detalhes.ID_Item }}">
+                <input type="number" name="qtd_{{ detalhes.ID_Item }}" min="1" max="{{ item.quantidade_necessaria }}" placeholder="0" inputmode="numeric">
+              </div>
+            {% endfor %}
+            <div class="modal-actions">
+              <button name="acao" value="confirmar_intencao" class="btn-doar">Tenho interesse em doar</button>
+              <a href="{{ url_for('perfil_ong_doador.perfil_ong_doador', cnpj=ong_modal.CNPJ_ID) }}" class="btn-ong">
+                Ver perfil da ONG
+              </a>
+            </div>
+          </form>
+        </div>
+      {% endfor %}
+    {% else %}
+      <!-- Cabeçalho com título e likes/dislikes -->
+      <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>
+          <img src="static/img/icone-doacao.png" alt="Título" class="icon-doacao-modal">
+          {{ lista_modal.titulo }}
+        </h2>
+        <div class="likes-dislikes">
+          <img src="static/img/icone-like.png" alt="Curtir" class="menu-icon">
+          {{ likes_lista.get(lista_modal.ID_Lista, 0) }}
+          &nbsp;&nbsp;
+          <img src="static/img/icone-dislike.png" alt="Não curtir" class="menu-icon">
+          {{ dislikes_lista.get(lista_modal.ID_Lista, 0) }}
+        </div>
+      </div>
+
+      <p>{{ lista_modal.descricao }}</p>
+      <small>ONG: {{ ong_modal.nome }} • {{ ong_modal.cep }} • {{ lista_modal.data_criacao }}</small>
+
+      <!-- Itens e intenção -->
+      <form method="POST" class="form-intencao">
+        <input type="hidden" name="lista_id" value="{{ lista_modal.ID_Lista }}">
+        <div class="form-alert" style="{% if not mensagem_modal %}display:none;{% endif %}">
+          {% if mensagem_modal %}{{ mensagem_modal }}{% endif %}
+        </div>
+        {% for item in lista_modal.itens %}
+          {% set detalhes = mapa_itens.get(item.ID_Item) %}
+          <div class="item-doacao">
+            <span>{{ detalhes.categoria }} - {{ detalhes.subcategoria }}
+              <small>(Necessário: {{ item.quantidade_necessaria }})</small>
+            </span>
+            <input type="hidden" name="item_id" value="{{ detalhes.ID_Item }}">
+            <input type="number" name="qtd_{{ detalhes.ID_Item }}" min="1" max="{{ item.quantidade_necessaria }}" placeholder="0" inputmode="numeric">
+          </div>
+        {% endfor %}
+        <div class="modal-actions">
+          <button name="acao" value="confirmar_intencao" class="btn-doar">Tenho interesse em doar</button>
+          <a href="{{ url_for('perfil_ong_doador.perfil_ong_doador', cnpj=ong_modal.CNPJ_ID) }}" class="btn-ong">Ver perfil da ONG</a>
+        </div>
+      </form>
+
+      <!-- Comentários -->
+      <hr>
+      <h3>
+        <img src="static/img/icone-comentario.png" alt="Avaliações" class="icon-comentario-modal">
+        Avaliações dos doadores
+      </h3>
+      <div class="comentarios">
+        {% set comentarios = comentarios_lista.get(lista_modal.ID_Lista, []) %}
+        {% if comentarios %}
+          {% for c in comentarios %}
+            <div class="comentario">
+              <p style="display:flex; align-items:center; gap:6px;">
+                <img src="https://www.empirechase.co.uk/wp-content/uploads/2023/09/281-2812821_user-account-management-logo-user-icon-png.png" alt="Ícone do doador" style="width:20px; height:20px;">
+                <strong>{{ c.nome }}</strong> - 
+                <span class="estrelas">
+                  {% for i in range(1,6) %}
+                    {% if i <= c.nota %}★{% else %}☆{% endif %}
+                  {% endfor %}
+                </span>
+                <small>{{ c.data }}</small>
+              </p>
+              <p>{{ c.comentario }}</p>
+              {% if c.itens %}
+                <ul>
+                  {% for item in c.itens %}
+                    <li>{{ item.categoria }} - {{ item.subcategoria }}: {{ item.quantidade }} unidade(s)</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+            <hr>
+          {% endfor %}
+        {% else %}
+          <p class="info">Nenhum comentário ainda. Seja o primeiro a avaliar!</p>
+        {% endif %}
+      </div>
+    {% endif %}   {# fecha o if ong_detalhe #}
+  </div>
+</div>
+{% endif %}   {# fecha o if lista_modal and ong_modal #}
+
+
+<!-- Validação client-side -->
+<script>
+  document.querySelectorAll('.form-intencao').forEach(form => {
+    form.addEventListener('submit', function(e) {
+      const inputs = Array.from(form.querySelectorAll('input[type="number"]'));
+      const algumaQtdValida = inputs.some(inp => {
+        const v = parseInt(inp.value, 10);
+        return !isNaN(v) && v >= 1;
+      });
+
+      const alertBox = form.querySelector('.form-alert');
+
+      if (!algumaQtdValida) {
+        e.preventDefault();
+        alertBox.style.display = "block";
+        alertBox.innerText = "⚠️ Selecione ao menos um item com quantidade igual ou maior que 1.";
+      } else {
+        if (!alertBox.innerText.includes("⚠️")) {
+          alertBox.style.display = "none";
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciar Listas | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleGerenciarListasONG.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+</head>
+<body>
+  <!-- Botão voltar -->
+  <a href="/MenuONG" class="btn-voltar">← Voltar ao Menu ONG</a>
+
+  <div class="container">
+    <h1>📋 Minhas Campanhas de Arrecadação de Doações - {{ ong.nome }}</h1>
+
+    <!-- Mensagens -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Criar nova lista -->
+    <div class="card">
+      <h2>➕ Criar nova Campanha de Arrecadação de doações</h2>
+      <form method="POST">
+        <input type="hidden" name="acao" value="criar_lista">
+        <input type="text" name="titulo" placeholder="Título da campanha" required>
+        <textarea name="descricao" placeholder="Descrição da campanha" rows="3"></textarea>
+
+        <h4>Escolha os itens do catálogo</h4>
+        <select id="item-select" name="item_id" multiple required>
+          {% for item in catalogo %}
+            <option value="{{ item.ID_Item }}">{{ item.categoria }} - {{ item.subcategoria or "Sem subcategoria" }}</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit" class="btn-amazon">Criar Campanha</button>
+      </form>
+    </div>
+
+    <!-- Barra de busca/filtro -->
+    <form method="GET" class="filter-inline">
+      <input type="text" name="busca" placeholder="🔍 Buscar campanhas por título ou descrição" value="{{ request.args.get('busca','') }}">
+      <select name="filtro_status">
+        <option value="">Todos</option>
+        <option value="ativa" {% if request.args.get('filtro_status')=='ativa' %}selected{% endif %}>🟢 Ativa</option>
+        <option value="finalizada" {% if request.args.get('filtro_status')=='finalizada' %}selected{% endif %}>✅ Finalizada</option>
+      </select>
+      <button type="submit" class="btn-amazon">Filtrar</button>
+    </form>
+
+    <!-- Listas -->
+    {% for lista in listas %}
+      <div class="card">
+        <h2>{{ lista.titulo }} {% if not lista.status %}✅ Finalizada{% endif %}</h2>
+        <p><strong>Descrição:</strong> {{ lista.descricao }}</p>
+        <p><strong>Data de Criação:</strong> {{ lista.data_criacao }}</p>
+        <p><strong>Status:</strong> {{ "Finalizada" if not lista.status else "Ativa" }}</p>
+
+        <!-- Botões lado a lado -->
+        <form method="POST" class="form-inline">
+          <input type="hidden" name="id_lista" value="{{ lista.ID_Lista }}">
+          <input type="text" name="nova_descricao" placeholder="Nova descrição">
+          <button name="acao" value="atualizar_descricao" class="btn-secondary">✏️ Alterar</button>
+          {% if lista.status %}
+            <button name="acao" value="finalizar_lista" class="btn-amazon">✅ Finalizar</button>
+          {% else %}
+            <button name="acao" value="reativar_lista" class="btn-secondary">🔄 Reativar</button>
+          {% endif %}
+          <button name="acao" value="excluir_lista" class="btn-danger">🗑️ Excluir</button>
+        </form>
+
+        <hr>
+
+        <!-- Itens expansíveis -->
+        <h3>Itens da Lista</h3>
+        {% set itens_lista = lista.itens or [] %}
+        {% for item in itens_lista %}
+          <details class="item-expander">
+            <summary>
+              <strong>{{ mapa_itens[item.ID_Item] }}</strong> — Quantidade atual: {{ item.quantidade_necessaria }}
+            </summary>
+            <form method="POST" class="form-inline">
+              <input type="hidden" name="id_lista" value="{{ lista.ID_Lista }}">
+              <input type="hidden" name="id_item" value="{{ item.ID_Item }}">
+              <input type="number" name="nova_qtd" value="{{ item.quantidade_necessaria }}" min="1" required>
+              <button name="acao" value="atualizar_quantidade" class="btn-amazon">Salvar</button>
+            </form>
+          </details>
+        {% else %}
+          <p>⚠️ Nenhum item registrado nesta campanha ainda.</p>
+        {% endfor %}
+
+        <!-- Adicionar item -->
+        <h4>➕ Adicionar novo item</h4>
+        <form method="POST" class="form-inline">
+          <input type="hidden" name="id_lista" value="{{ lista.ID_Lista }}">
+          <select name="id_item" required class="dropdown">
+            {% for item in catalogo %}
+              <option value="{{ item.ID_Item }}">{{ item.categoria }} - {{ item.subcategoria or "Sem subcategoria" }}</option>
+            {% endfor %}
+          </select>
+          <input type="number" name="quantidade" placeholder="Qtd" min="1" required>
+          <button name="acao" value="adicionar_item" class="btn-amazon">Adicionar</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Choices.js -->
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      new Choices('#item-select', {
+        removeItemButton: true,
+        searchPlaceholderValue: 'Buscar item...',
+        noResultsText: 'Nenhum item encontrado',
+        itemSelectText: 'Clique para selecionar'
+      });
+    });
+  </script>
+</body>
+</html>

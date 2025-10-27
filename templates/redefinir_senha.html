@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Redefinir Senha | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/recuperarSenha.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="logo">🤝 SolidariHub</div>
+    <h1>🔐 Redefinir Senha</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="">
+      <label for="senha">Nova senha:</label>
+      <input type="password" id="senha" name="senha" placeholder="Digite sua nova senha" required>
+
+      <button type="submit" class="btn-primary">Atualizar senha</button>
+    </form>
+
+    <div class="link-left">
+      <a href="/" class="btn-secondary">← Voltar para Home</a>
+    </div>
+  </div>
+</body>
+</html>

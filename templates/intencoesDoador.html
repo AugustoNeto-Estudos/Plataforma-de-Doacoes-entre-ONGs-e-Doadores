@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Minhas Intenções | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleIntencoesDoador.css') }}">
+</head>
+<body>
+  <!-- Botão voltar -->
+  <a href="{{ url_for('menu_doador.menu_doador') }}" class="btn-voltar">← Voltar ao Menu Doador</a>
+
+  <div class="container">
+    <h1>📋 Minhas Intenções de Doação</h1>
+
+    <!-- Mensagens de sucesso/erro -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, msg in messages %}
+            <div class="flash {{ category }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Filtros -->
+    <form method="POST" class="filtros-form">
+      <select name="status">
+        <option value="Todos" {% if status_selecionado == "Todos" %}selected{% endif %}>Todos</option>
+        <option value="Pendente" {% if status_selecionado == "Pendente" %}selected{% endif %}>⏳ Pendente</option>
+        <option value="Aprovado" {% if status_selecionado == "Aprovado" %}selected{% endif %}>✅ Aprovado</option>
+        <option value="Reprovado" {% if status_selecionado == "Reprovado" %}selected{% endif %}>❌ Reprovado</option>
+        <option value="Finalizado" {% if status_selecionado == "Finalizado" %}selected{% endif %}>📦 Finalizado</option>
+      </select>
+      <input type="text" name="busca" placeholder="🔍 Buscar por ONG ou campanha" value="{{ busca }}">
+      <button type="submit" class="btn-amazon">Filtrar</button>
+    </form>
+
+    {% macro render_intencoes(lista, titulo) %}
+      {% if lista %}
+        <h2>{{ titulo }}</h2>
+        {% for i in lista %}
+          {% set lista_sel = mapa_listas[i.ID_Lista] %}
+          {% set ong = mapa_ongs[i.ID_ONG] %}
+          <div class="card">
+            <p><strong>Campanha:</strong> {{ lista_sel.titulo }}</p>
+            <p><strong>ONG:</strong> {{ ong.nome }}</p>
+            <p><strong>Email:</strong> {{ ong.email }} | <strong>Contato:</strong> {{ ong.contato }}</p>
+            <p><strong>Data:</strong> {{ i.data_criacao }}</p>
+            <p><strong>Status:</strong> {{ STATUS_MAP[i.status] }}</p>
+
+            {% if i.status == 1 %}
+              <form method="POST" action="{{ url_for('intencoes_doador.confirmar_pedido', id_intencao=i.ID_Intencao) }}">
+                <h4>Itens pretendidos:</h4>
+                {% for item in listar_itens_intencao(i.ID_Intencao) %}
+                  {% set det = mapa_itens[item.ID_Item] %}
+                  <p>
+                    {{ det.categoria }} - {{ det.subcategoria }}: {{ item.quantidade_pretendida }} unidades
+                    {% if item.observacao %}
+                    <span class="obs-ong">📝 Observação da ONG: {{ item.observacao }}</span>
+                    {% endif %}
+                  </p>
+                {% endfor %}
+                <button type="submit" class="btn-amazon">📦 Confirmar Pedido</button>
+              </form>
+            {% elif i.status == 3 %}
+              <a href="{{ url_for('pedidos_doador.pedidos_doador') }}" class="btn-amazon">📂 Ver Pedido</a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="info">Nenhuma intenção encontrada nesta seção.</p>
+      {% endif %}
+    {% endmacro %}
+
+    <!-- Renderização condicional -->
+    {% if status_selecionado == "Todos" %}
+      {{ render_intencoes(pendentes, "⏳ Intenções Pendentes") }}
+      {{ render_intencoes(aprovadas, "✅ Intenções Aprovadas") }}
+      {{ render_intencoes(reprovadas, "❌ Intenções Reprovadas") }}
+      {{ render_intencoes(finalizadas, "📦 Intenções Finalizadas") }}
+    {% elif status_selecionado == "Pendente" %}
+      {{ render_intencoes(pendentes, "⏳ Intenções Pendentes") }}
+    {% elif status_selecionado == "Aprovado" %}
+      {{ render_intencoes(aprovadas, "✅ Intenções Aprovadas") }}
+    {% elif status_selecionado == "Reprovado" %}
+      {{ render_intencoes(reprovadas, "❌ Intenções Reprovadas") }}
+    {% elif status_selecionado == "Finalizado" %}
+      {{ render_intencoes(finalizadas, "📦 Intenções Finalizadas") }}
+    {% endif %}
+  </div>
+</body>
+</html>

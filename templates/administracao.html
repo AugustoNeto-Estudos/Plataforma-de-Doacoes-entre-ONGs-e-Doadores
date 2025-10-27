@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel Administrativo | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleAdmin.css') }}">
+</head>
+<body>
+  {% macro mask_id(id_str, keep_start=2, keep_end=2) -%}
+    {%- set s = (id_str|string)|replace('.', '')|replace('-', '')|replace('/', '') -%}
+    {%- set n = s|length -%}
+    {%- if n <= keep_start + keep_end -%}
+      {{ s }}
+    {%- else -%}
+      {{ s[:keep_start] ~ ('*' * (n - keep_start - keep_end)) ~ s[-keep_end:] }}
+    {%- endif -%}
+  {%- endmacro %}
+
+  {% macro mask_email(email_str) -%}
+    {%- set at_index = email_str.find('@') -%}
+    {%- if at_index > 0 -%}
+      {%- set local = email_str[:at_index] -%}
+      {%- set domain = email_str[at_index+1:] -%}
+      {%- set ln = local|length -%}
+      {%- if ln <= 2 -%}
+        {{ local[0:1] ~ '*'*(ln-1) ~ '@' ~ domain }}
+      {%- else -%}
+        {{ local[0:1] ~ '*'*(ln-2) ~ local[-1:] ~ '@' ~ domain }}
+      {%- endif -%}
+    {%- else -%}
+      {{ email_str }}
+    {%- endif -%}
+  {%- endmacro %}
+
+
+  <a href="/" class="btn-home">← Voltar para Home</a>
+
+  <div class="container">
+    <h1>🛠️ Painel Administrativo</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <!-- ONGs -->
+    <h2 id="ongs">📋 ONGs cadastradas</h2>
+    <div class="filter-bar">
+      <form method="GET" action="#ongs">
+        <input type="text" name="busca_ong" placeholder="🔍 Buscar ONG por nome ou email" value="{{ request.args.get('busca_ong','') }}">
+        <select name="filtro_ong">
+          <option value="">Todos</option>
+          <option value="ativa" {% if request.args.get('filtro_ong')=='ativa' %}selected{% endif %}>🟢 Ativa</option>
+          <option value="inativa" {% if request.args.get('filtro_ong')=='inativa' %}selected{% endif %}>🔴 Inativa</option>
+          <option value="pendente" {% if request.args.get('filtro_ong')=='pendente' %}selected{% endif %}>⏳ Pendente</option>
+          <option value="aprovada" {% if request.args.get('filtro_ong')=='aprovada' %}selected{% endif %}>✅ Aprovada</option>
+          <option value="recusada" {% if request.args.get('filtro_ong')=='recusada' %}selected{% endif %}>❌ Recusada</option>
+        </select>
+        <button type="submit" class="btn-amazon">Filtrar</button>
+      </form>
+    </div>
+
+    {% for ong in ongs %}
+      <div class="card">
+        <h3>{{ ong.nome }} ({{ mask_email(ong.email) }})</h3>
+        <p>CNPJ: {{ mask_id(ong.CNPJ_ID, 2, 2) }}</p>
+        <p>Status Verificação: 
+          {% if ong.status_verificacao == 1 %}✅ Aprovada
+          {% elif ong.status_verificacao == 2 %}❌ Recusada
+          {% else %}⏳ Pendente{% endif %}
+        </p>
+        <p>Status Conta: {{ "🟢 Ativa" if ong.status_conta else "🔴 Inativa" }}</p>
+
+        <form method="POST" class="form-group">
+          <input type="hidden" name="id" value="{{ ong.CNPJ_ID }}">
+          <div class="btn-row">
+            <button name="acao" value="aprovar_ong" class="btn-amazon">✅ Aprovar</button>
+            <button name="acao" value="pendente_ong" class="btn-secondary">⏳ Pendente</button>
+            <button name="acao" value="recusar_ong" class="btn-secondary">❌ Recusar</button>
+          </div>
+          <div class="btn-row">
+            <button name="acao" value="ativar_ong" class="btn-amazon">🟢 Ativar Conta</button>
+            <button name="acao" value="desativar_ong" class="btn-secondary">🔴 Desativar Conta</button>
+            <button name="acao" value="excluir_ong" class="btn-danger">🗑️ Excluir ONG</button>
+          </div>
+        </form>
+      </div>
+    {% endfor %}
+
+    <!-- Doadores -->
+    <h2 id="doadores">👤 Doadores cadastrados</h2>
+    <div class="filter-bar">
+      <form method="GET" action="#doadores">
+        <input type="text" name="busca_doador" placeholder="🔍 Buscar Doador por nome ou email" value="{{ request.args.get('busca_doador','') }}">
+        <select name="filtro_doador">
+          <option value="">Todos</option>
+          <option value="ativa" {% if request.args.get('filtro_doador')=='ativa' %}selected{% endif %}>🟢 Ativa</option>
+          <option value="inativa" {% if request.args.get('filtro_doador')=='inativa' %}selected{% endif %}>🔴 Inativa</option>
+        </select>
+        <button type="submit" class="btn-amazon">Filtrar</button>
+      </form>
+    </div>
+
+    {% for doador in doadores %}
+      <div class="card">
+        <h3>{{ doador.nome }} ({{ mask_email(doador.email) }})</h3>
+        <p>CPF: {{ mask_id(doador.CPF_ID, 2, 2) }}</p>
+        <p>Status Conta: {{ "🟢 Ativa" if doador.status_conta else "🔴 Inativa" }}</p>
+
+        <form method="POST" class="form-group">
+          <input type="hidden" name="id" value="{{ doador.CPF_ID }}">
+          <div class="btn-row">
+            <button name="acao" value="ativar_doador" class="btn-amazon">✅ Ativar</button>
+            <button name="acao" value="desativar_doador" class="btn-secondary">❌ Desativar</button>
+            <button name="acao" value="excluir_doador" class="btn-danger">🗑️ Excluir</button>
+          </div>
+        </form>
+      </div>
+    {% endfor %}
+
+    <!-- Itens -->
+    <h2 id="itens">📦 Itens do Catálogo</h2>
+
+    <h3>➕ Cadastrar novo item</h3>
+    <form method="POST" class="form-group">
+      <input type="text" name="categoria" placeholder="Categoria do item" required>
+      <input type="text" name="subcategoria" placeholder="Subcategoria (opcional)">
+      <button name="acao" value="inserir_item" class="btn-amazon">Cadastrar Item</button>
+    </form>
+
+    {% for item in itens %}
+      <div class="card">
+        <h3>{{ item.categoria }} - {{ item.subcategoria or "Sem subcategoria" }}</h3>
+        <p>ID do Item: {{ item.ID_Item }}</p>
+
+        <form method="POST" class="form-group">
+          <input type="hidden" name="id" value="{{ item.ID_Item }}">
+          <input type="text" name="nova_categoria" value="{{ item.categoria }}" placeholder="Nova categoria">
+          <input type="text" name="nova_subcategoria" value="{{ item.subcategoria }}" placeholder="Nova subcategoria">
+          <button name="acao" value="atualizar_item" class="btn-amazon">✏️ Atualizar</button>
+          <button name="acao" value="excluir_item" class="btn-danger">🗑️ Excluir</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Script para scroll automático -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("filtro_doador") || params.has("busca_doador")) {
+      document.getElementById("doadores").scrollIntoView();
+    }
+    if (params.has("filtro_ong") || params.has("busca_ong")) {
+      document.getElementById("ongs").scrollIntoView();
+    }
+  </script>
+</body>
+</html>

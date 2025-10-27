@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>SolidariHub</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleHome.css') }}">
+
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/SolidariHub_logo.png') }}" alt="Logo SolidariHub" class="logo-img">
+      SolidariHub
+    </div>
+    <div class="menu">
+      <label for="login-select">Entrar:</label>
+      <select id="login-select" onchange="window.location.href=this.value">
+        <option value="">Selecione</option>
+        <option value="/LoginDoador">Login Doador</option>
+        <option value="/LoginONG">Login ONG</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT wrapper: empurra footer para base sem espaço em branco -->
+  <main class="main-content">
+    <!-- HERO -->
+    <section class="hero-section">
+      <h2 class="hero-title">
+        <img src="{{ url_for('static', filename='img/SolidariHub_logo_escrito_amarelo.png') }}" 
+            alt="SolidariHub escrito" class="hero-logo">
+      </h2>
+      <h1>Conectando Doadores e Instituições</h1>
+      <h2>De forma simples, rápida e confiável</h2>
+      <br>
+      <div class="hero-buttons">
+        <a href="/LoginDoador" class="big-button-link">
+          <img src="{{ url_for('static', filename='img/icone-pessoa.png') }}" 
+              alt="Ícone pessoa" class="icon-btn">
+          Quero Doar
+        </a>
+        <a href="/LoginONG" class="big-button-link">
+          <img src="{{ url_for('static', filename='img/icone-ong.png') }}" 
+              alt="Ícone ONG" class="icon-btn">
+          Sou uma ONG
+        </a>
+      </div>
+    </section>
+
+    <!-- BENEFÍCIOS (lado a lado) -->
+    <section class="benefits">
+      <div class="benefit">
+        <img src="{{ url_for('static', filename='img/icone-rapido.png') }}" 
+          alt="Ícone rápido" class="icon">
+        <h3>Rápido</h3>
+        <p>Faça sua doação em apenas 1 click.</p>
+      </div>
+      <div class="benefit">
+        <img src="{{ url_for('static', filename='img/icone-transparente.png') }}" 
+          alt="Ícone transparente" class="icon">
+        <h3>Transparente</h3>
+        <p>Acompannhe o andamento de todas suas doções pela plataforma.</p>
+      </div>
+      <div class="benefit">
+        <img src="{{ url_for('static', filename='img/icone-conectado.png') }}" 
+          alt="Ícone conectado" class="icon">
+        <h3>Conectado</h3>
+        <p>Alcance doadores e ONGs de todo o Brasil.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 SolidariHub — Transformando vidas com solidariedade</p>
+  </footer>
+</body>
+</html>
