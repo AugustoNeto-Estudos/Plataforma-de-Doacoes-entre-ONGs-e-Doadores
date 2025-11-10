@@ -3,3 +3,6 @@ psycopg2-binary==2.9.9
 bcrypt==4.1.2
 requests==2.31.0
 reportlab==4.0.8
+pytest==8.3.3
+pytest-cov==5.0.0
+
