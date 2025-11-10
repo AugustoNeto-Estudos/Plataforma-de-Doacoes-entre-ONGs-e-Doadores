@@ -1,0 +1,122 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #232f3e;
+  margin-bottom: 30px;
+}
+
+h2 {
+  margin-top: 40px;
+  color: #3a4a63;
+}
+
+.flash-messages {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.flash-messages li {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.notificacoes .info,
+.notificacoes .alerta,
+.notificacoes .sucesso {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.notificacoes .info {
+  background-color: #e7f3fe;
+  color: #31708f;
+}
+
+.notificacoes .alerta {
+  background-color: #fcf8e3;
+  color: #8a6d3b;
+}
+
+.notificacoes .sucesso {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.filtro-cep {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.filtro-cep input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.filtro-cep button {
+  padding: 8px 12px;
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid #d0d7e2;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #ff9900;
+}
+
+.item-doacao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.item-doacao input[type="number"] {
+  width: 80px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.card button {
+  margin-top: 10px;
+  padding: 10px 16px;
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}

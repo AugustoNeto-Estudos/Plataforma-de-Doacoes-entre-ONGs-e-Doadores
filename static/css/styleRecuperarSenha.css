@@ -1,0 +1,158 @@
+/* Fundo com imagem */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: url("https://images.pexels.com/photos/28494623/pexels-photo-28494623.jpeg") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  color: #333;
+}
+
+/* Caixa central */
+.container {
+  width: 100%;
+  max-width: 450px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.logo {
+  margin-bottom: 15px;
+}
+
+.logo-img {
+  max-width: 250px;
+  height: auto;
+}
+
+/* Título */
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #232f3e;
+}
+
+.menu-icon {
+  height: 40px;
+  width: 40px;
+  vertical-align: middle;
+  margin-right: 4px;
+  margin-bottom: 3px;
+}
+
+/*Mensagem de alerta*/
+.flash-messages {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.flash-messages li {
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  font-weight: 500;
+  background: #fdecea;
+  color: #d9534f;
+}
+
+/* Formulário */
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 600;
+  color: #232f3e;
+  text-align: left;
+}
+
+/* Garante que os campos de senha mantenham o estilo mesmo quando viram type="text" */
+.password-container input[type="password"],
+.password-container input[type="text"],
+.container input[type="email"] {
+  width: 100%;
+  padding: 14px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.password-container input:focus,
+.container input[type="email"]:focus {
+  border-color: #ff9900;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255,153,0,0.2);
+}
+
+
+/* Botão principal */
+.btn-primary {
+  margin-top: 20px;
+  padding: 14px;
+  width: 100%;
+  background-color: #ff9900;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #e68a00;
+}
+
+/* Botão voltar*/
+.btn-voltar {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 10px 20px;
+  background-color: #ff9900;
+  border: 1px solid rgb(240, 152, 38);
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.btn-voltar:hover {
+  background-color: #e68a00;
+}
+
+/* Container de senha com ícone */
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px; /* espaço pro ícone */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  opacity: 0.7;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
