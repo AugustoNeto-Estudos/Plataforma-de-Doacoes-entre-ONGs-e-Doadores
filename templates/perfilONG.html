@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil - {{ ong.nome }} | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stylePerfilONG.css') }}">
+</head>
+<body>
+  <a href="/MenuONG" class="btn-voltar">← Voltar ao Menu ONG</a>
+
+  <div class="container">
+
+    <!-- Header com logo e status -->
+    <div class="profile-header">
+      <img src="https://cdn.pixabay.com/photo/2023/05/02/10/35/avatar-7964945_640.png" 
+           alt="Logo da ONG" class="profile-logo">
+      <div class="profile-title">
+        <h1>
+          Perfil – {{ ong.nome }}
+          {% if media_nota %}
+            – <img src="static/img/icone-estrela-azul.png" alt="Nota" class="star-icon"> {{ media_nota }}
+          {% endif %}
+        </h1>
+        <span class="badge {{ 'ativa' if ong.status_conta else 'inativa' }}">
+          {{ "🟢 Ativa" if ong.status_conta else "🔴 Inativa" }}
+        </span>
+      </div>
+    </div>
+
+    <div class="profile-layout">
+      <!-- Coluna esquerda: informações -->
+      <div class="profile-info card">
+        <h2><img src="static/img/icone-info.png" class="menu-icon"> Informações da ONG</h2>
+        <ul class="info-list">
+          <li><img src="static/img/icone-ong.png" class="menu-icon"> <strong>Nome:</strong> {{ ong.nome }}</li>
+          {% if media_nota %}
+            <li><img src="static/img/icone-estrela-azul.png" class="menu-icon"> <strong>Nota:</strong> {{ media_nota }}</li>
+          {% endif %}
+          <li><img src="static/img/icone-id.png" class="menu-icon"> <strong>CNPJ:</strong> {{ ong.CNPJ_ID }}</li>
+          <li><img src="static/img/icone-email.png" class="menu-icon"> <strong>Email:</strong> {{ ong.email }}</li>
+          <li><img src="static/img/icone-telefone.png" class="menu-icon"> <strong>Contato:</strong> {{ ong.contato }}</li>
+          <li><img src="static/img/icone-localizacao-azul.png" class="menu-icon"> <strong>CEP:</strong> {{ ong.cep }}</li>
+          <li><img src="static/img/icone-descricao.png" class="menu-icon"> <strong>Descrição:</strong><br>{{ ong.descricao }}</li>
+        </ul>
+      </div>
+
+      <!-- Coluna direita: listas -->
+      <div class="profile-lists card">
+        <h2><img src="static/img/icone-campanha-amarelo.png" class="menu-icon"> Minhas Campanhas de Arrecadação de Doações</h2>
+
+        <!-- Campo de busca -->
+        <form method="GET" class="busca-form">
+          <input type="text" name="busca"
+                 placeholder="Buscar por campanha"
+                 value="{{ busca }}"
+                 class="input-busca"
+                 style="background-image:url('static/img/icone-lupa-cinza.png'); background-repeat:no-repeat; background-position:8px center; padding-left:32px;">
+          <button type="submit" class="btn-amazon">Filtrar</button>
+        </form>
+
+        {% if listas %}
+          <ul class="lista-doacoes">
+            {% for lista in listas %}
+              <li class="lista-item">
+                <div class="lista-header">
+                  <strong>{{ lista.titulo }}</strong>
+                  <span class="status {{ 'ativa' if lista.status else 'finalizada' }}">
+                    {{ "Ativa" if lista.status else "Finalizada" }}
+                  </span>
+                </div>
+                <p>{{ lista.descricao }}</p>
+                <a href="/GerenciarListasONG" class="btn-amazon">
+                  <img src="static/img/icone-busca.png" class="menu-icon"> Gerenciar
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty"><img src="static/img/icone-info.png" class="menu-icon"> Nenhuma campanha encontrada.</p>
+        {% endif %}
+
+        <div class="actions">
+          <a href="/GerenciarListasONG" class="btn-amazon">
+            <img src="static/img/icone-mais.png" class="menu-icon"> Criar Nova Campanha
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu ONG | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleMenuONG.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <img src="static/img/SolidariHub_logo_escrito_amarelo.png" alt="SolidariHub" class="logo-img">
+      <nav class="nav-links">
+        <a href="/PerfilONG">
+          <img src="static/img/icone-pessoa-branco.png" alt="Perfil" class="menu-icon"> Meu Perfil
+        </a>
+
+        <!-- Notificações -->
+        <div class="dropdown">
+          <button class="notif-btn {% if num_pendentes or num_aprovadas or num_pedidos %}highlight{% endif %}">
+            <img src="static/img/icone-sino.png" alt="Notificações" class="menu-icon"> Notificações 
+            <img src="static/img/icone-seta-baixo.png" alt="Abrir" class="menu-icon">
+          </button>
+          <div class="dropdown-content">
+            {% if num_pendentes > 0 %}
+              <a href="/IntencoesONG">
+                <img src="static/img/icone-ampulheta.png" alt="Pendentes" class="menu-icon">
+                {{ num_pendentes }} intenção(ões) pendente(s)
+              </a>
+            {% endif %}
+            {% if num_aprovadas > 0 %}
+              <a href="/IntencoesONG">
+                <img src="static/img/icone-aprovado.png" alt="Aprovadas" class="menu-icon">
+                {{ num_aprovadas }} intenção(ões) aprovada(s)
+              </a>
+            {% endif %}
+            {% if num_pedidos > 0 %}
+              <a href="/PedidosONG">
+                <img src="static/img/icone-pedido-azul.png" alt="Pedidos" class="menu-icon">
+                {{ num_pedidos }} pedido(s) em andamento
+              </a>
+            {% endif %}
+            {% if num_pendentes == 0 and num_aprovadas == 0 and num_pedidos == 0 %}
+              <span class="no-notif">Nenhuma notificação</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Botões -->
+        <a href="/GerenciarListasONG">
+          <img src="static/img/icone-campanha-branco.png" alt="Campanhas" class="menu-icon"> Gerenciar Campanhas
+        </a>
+        <a href="/IntencoesONG" class="{% if num_pendentes or num_aprovadas %}highlight{% endif %}">
+          <img src="static/img/icone-intencao.png" alt="Intenções" class="menu-icon"> Intenções de Doação
+        </a>
+        <a href="/PedidosONG" class="{% if num_pedidos %}highlight{% endif %}">
+          <img src="static/img/icone-pedido.png" alt="Pedidos" class="menu-icon"> Pedidos Recebidos
+        </a>
+        <a href="/" class="btn-voltar">Sair</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Toasts -->
+  <div id="toast-container"></div>
+  <script>
+    function showToast(msg, type="info") {
+      const toast = document.createElement("div");
+      toast.className = "toast " + type;
+      toast.innerHTML = msg;
+      document.getElementById("toast-container").appendChild(toast);
+      setTimeout(() => toast.remove(), 5000);
+    }
+
+    const numPendentes = {{ num_pendentes }};
+    const numAprovadas = {{ num_aprovadas }};
+    const numPedidos = {{ num_pedidos }};
+
+    if (numPendentes > 0) {
+      showToast(`<img src="static/img/icone-ampulheta.png" class="toast-icon"> Você tem ${numPendentes} intenção(ões) pendente(s).`, "warning");
+    }
+    if (numAprovadas > 0) {
+      showToast(`<img src="static/img/icone-aprovado.png" class="toast-icon"> Você tem ${numAprovadas} intenção(ões) aprovada(s).`, "info");
+    }
+    if (numPedidos > 0) {
+      showToast(`<img src="static/img/icone-pedido-azul.png" class="toast-icon"> Você tem ${numPedidos} pedido(s) em andamento.`, "success");
+    }
+  </script>
+
+  <div class="container">
+    <h1>
+      <img src="static/img/icone-ong.png" alt="Início" class="ong-icon">
+      Bem-vindo(a), {{ ong.nome }}
+    </h1>
+
+    <!-- Criar nova campanha rápida -->
+    <div class="card">
+      <h2>
+        <img src="static/img/icone-mais.png" alt="Criar" class="menu-icon">
+        Criar Campanha de Arrecadação Rápida
+      </h2>
+      <form method="POST" id="form-criar-lista">
+        <input type="hidden" name="acao" value="criar_lista_rapida">
+        <input type="text" name="titulo" placeholder="Título da campanha" required>
+        <textarea name="descricao" placeholder="Descrição da campanha" rows="3"></textarea>
+
+        <h4>
+          <img src="static/img/icone-caixa.png" alt="Catálogo" class="box-icon">
+          Escolha os itens do catálogo
+        </h4>
+        <select id="item-select" name="item_id" multiple required>
+          {% for item in catalogo %}
+            <option value="{{ item.ID_Item }}">{{ item.categoria }} - {{ item.subcategoria or "Sem subcategoria" }}</option>
+          {% endfor %}
+        </select>
+
+        <!-- Campos de quantidade -->
+        <div id="quantidades-container"></div>
+
+        <button type="submit" class="btn-amazon">
+          <img src="static/img/icone-campanha.png" alt="Criar" class="menu-icon">
+          Criar Campanha
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Choices.js -->
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const select = document.getElementById('item-select');
+      const container = document.getElementById('quantidades-container');
+
+      const choices = new Choices(select, {
+        removeItemButton: true,
+        searchPlaceholderValue: 'Buscar item...',
+        noResultsText: 'Nenhum item encontrado',
+        itemSelectText: 'Clique para selecionar'
+      });
+
+      select.addEventListener('change', function() {
+        container.innerHTML = "";
+        const selecionados = Array.from(select.selectedOptions);
+        selecionados.forEach(opt => {
+          container.innerHTML += `
+            <div class="item-qtd">
+              <label>${opt.text}</label>
+              <input type="hidden" name="item_id" value="${opt.value}">
+              <input type="number" name="qtd_${opt.value}" min="1" value="1" required>
+            </div>
+          `;
+        });
+      });
+    });
+  </script>
+</body>
+</html>

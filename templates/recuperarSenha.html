@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Recuperar Senha | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleRecuperarSenha.css') }}">
+</head>
+<body>
+  <!-- Botão voltar -->
+  <a href="/" class="btn-voltar">← Voltar para Home</a>
+
+  <div class="container">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/SolidariHub_logo_escrito_azul.png') }}" 
+           alt="SolidariHub" class="logo-img">
+    </div>
+      <h1>
+        <img src="static/img/icone-trancado.png" alt="Criar" class="menu-icon">
+        Recuperar Senha
+      </h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if messages %}
+    <script>
+      // Aguarda 5 segundos e redireciona para a home
+      setTimeout(() => {
+        window.location.href = "{{ url_for('home.index') }}";
+      }, 1000);
+    </script>
+    {% endif %}
+
+    <form method="POST" action="">
+      <label for="email">Email cadastrado:</label>
+      <input type="email" id="email" name="email" placeholder="exemplo@dominio.com" required>
+
+      <button type="submit" class="btn-primary">Enviar instruções</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil - {{ ong.nome }} | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stylePerfilONG.css') }}">
+</head>
+<body>
+  <!-- Botão voltar -->
+  <a href="/MenuDoador" class="btn-voltar-azul">←Voltar ao Menu do Doador</a>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="profile-header">
+      <img src="https://cdn.pixabay.com/photo/2023/05/02/10/35/avatar-7964945_640.png" 
+           alt="Logo da ONG" class="profile-logo">
+      <div class="profile-title">
+        <h1>
+          Perfil – {{ ong.nome }}
+          {% if media_nota %}
+            – <img src="{{ url_for('static', filename='img/icone-estrela-azul.png') }}" alt="Nota" class="star-icon"> {{ media_nota }}
+          {% endif %}
+        </h1>
+        <span class="badge {{ 'ativa' if ong.status_conta else 'inativa' }}">
+          {{ "🟢 Ativa" if ong.status_conta else "🔴 Inativa" }}
+        </span>
+      </div>
+    </div>
+
+    <div class="profile-layout">
+      <!-- Coluna esquerda -->
+      <div class="profile-info card">
+        <h2><img src="{{ url_for('static', filename='img/icone-info.png') }}" class="menu-icon"> Informações da ONG</h2>
+        <ul class="info-list">
+          <li><img src="{{ url_for('static', filename='img/icone-ong.png') }}" class="menu-icon"> <strong>Nome:</strong> {{ ong.nome }}</li>
+          {% if media_nota %}
+            <li><img src="{{ url_for('static', filename='img/icone-estrela-azul.png') }}" class="menu-icon"> <strong>Nota:</strong> {{ media_nota }}</li>
+          {% endif %}
+          <li><img src="{{ url_for('static', filename='img/icone-id.png') }}" class="menu-icon"> <strong>CNPJ:</strong> {{ ong.CNPJ_ID }}</li>
+          <li><img src="{{ url_for('static', filename='img/icone-email.png') }}" class="menu-icon"> <strong>Email:</strong> {{ ong.email }}</li>
+          <li><img src="{{ url_for('static', filename='img/icone-telefone.png') }}" class="menu-icon"> <strong>Contato:</strong> {{ ong.contato }}</li>
+          <li><img src="{{ url_for('static', filename='img/icone-localizacao-azul.png') }}" class="menu-icon"> <strong>CEP:</strong> {{ ong.cep }}</li>
+          <li><img src="{{ url_for('static', filename='img/icone-descricao.png') }}" class="menu-icon"> <strong>Descrição:</strong><br>{{ ong.descricao }}</li>
+        </ul>
+
+        <!-- Botão para consultar dados públicos -->
+        <form method="POST" class="consulta-cnpj-form">
+          <button type="submit" class="btn-primary">
+            <img src="{{ url_for('static', filename='img/icone-lupa.png') }}" class="menu-icon"> Consultar dados públicos do CNPJ
+          </button>
+        </form>
+      </div>
+
+      <!-- Coluna direita -->
+      <div class="profile-lists card">
+        <h2><img src="{{ url_for('static', filename='img/icone-campanha-amarelo.png') }}" class="menu-icon"> Campanhas de Arrecadação</h2>
+
+        <!-- Campo de busca -->
+        <form method="GET" class="busca-form">
+          <input type="text" name="busca"
+                 placeholder="Buscar por campanha"
+                 value="{{ busca }}"
+                 class="input-busca"
+                 style="background-image:url('{{ url_for('static', filename='img/icone-lupa-cinza.png') }}'); background-repeat:no-repeat; background-position:8px center; padding-left:32px;">
+          <button type="submit" class="btn-amazon">Filtrar</button>
+        </form>
+
+        {% if listas %}
+          <ul class="lista-doacoes">
+            {% for lista in listas %}
+              <li class="lista-item">
+                <div class="lista-header">
+                  <strong>{{ lista.titulo }}</strong>
+                  <span class="status {{ 'ativa' if lista.status else 'finalizada' }}">
+                    {{ "Ativa" if lista.status else "Finalizada" }}
+                  </span>
+                </div>
+                <p>{{ lista.descricao }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="empty">
+            <img src="{{ url_for('static', filename='img/icone-info.png') }}" class="menu-icon">
+            Esta ONG ainda não criou campanhas de arrecadação.
+          </p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Modal de dados públicos -->
+    {% if dados_cnpj %}
+    <div id="modalCNPJ" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="document.getElementById('modalCNPJ').style.display='none'">&times;</span>
+        <h2>
+          Dados Públicos da Receita Federal
+        </h2>
+        <ul class="info-list">
+          <li><strong>Razão Social:</strong> {{ dados_cnpj.razao_social }}</li>
+          <li><strong>Nome Fantasia:</strong> {{ dados_cnpj.nome_fantasia }}</li>
+          <li><strong>Situação Cadastral:</strong> {{ dados_cnpj.descricao_situacao_cadastral }}</li>
+          <li><strong>Natureza Jurídica:</strong> {{ dados_cnpj.natureza_juridica }}</li>
+          <li><strong>Data de Abertura:</strong> {{ dados_cnpj.data_inicio_atividade }}</li>
+          <li><strong>Município:</strong> {{ dados_cnpj.municipio }}</li>
+          <li><strong>UF:</strong> {{ dados_cnpj.uf }}</li>
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Script para abrir modal automaticamente -->
+    <script>
+      window.onload = function() {
+        {% if dados_cnpj %}
+          document.getElementById("modalCNPJ").style.display = "flex";
+        {% endif %}
+      };
+
+      window.onclick = function(event) {
+        const modal = document.getElementById("modalCNPJ");
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      };
+    </script>
+
+  </div>
+</body>
+</html>
