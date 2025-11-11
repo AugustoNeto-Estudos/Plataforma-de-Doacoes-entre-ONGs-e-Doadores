@@ -2,8 +2,6 @@ import streamlit as st
 import psycopg2
 from psycopg2 import OperationalError, Error
 
-#todos dêem glória ao Nick! 
-
 # # Função de conexão DB hospedado no aws
 # def criar_conexao():
 #     try:
@@ -33,3 +31,4 @@ def criar_conexao():
         return conexao  # retorna o objeto de conexão se tudo der certo
     except OperationalError:
         return None  # retorna None se ocorrer erro de conexão
+
