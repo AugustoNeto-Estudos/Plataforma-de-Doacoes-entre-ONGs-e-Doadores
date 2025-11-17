@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Redefinir Senha | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleRecuperarSenha.css') }}">
+</head>
+<body>
+  <!-- Botão voltar -->
+  <a href="/" class="btn-voltar">← Voltar para Home</a>
+
+  <div class="container">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/SolidariHub_logo_escrito_azul.png') }}" 
+           alt="SolidariHub" class="logo-img">
+    </div>
+    <h1>
+      <img src="{{ url_for('static', filename='img/icone-trancado.png') }}" alt="Senha" class="menu-icon">
+      Redefinir Senha
+    </h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="">
+      <label for="senha">Nova senha:</label>
+      <div class="password-container">
+        <input type="password" id="senha" name="senha" placeholder="Digite sua nova senha" required>
+        <img src="{{ url_for('static', filename='img/icone-oculte.png') }}" 
+             alt="Mostrar/ocultar senha" 
+             class="toggle-password" 
+             data-target="senha">
+      </div>
+
+      <div class="password-container">
+        <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme sua nova senha" required>
+        <img src="{{ url_for('static', filename='img/icone-oculte.png') }}" 
+             alt="Mostrar/ocultar senha" 
+             class="toggle-password" 
+             data-target="confirmar_senha">
+      </div>
+
+      <button type="submit" class="btn-primary">Atualizar senha</button>
+    </form>
+  </div>
+
+  <script>
+    // Toggle senha
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".toggle-password").forEach(icon => {
+        icon.addEventListener("click", () => {
+          const targetId = icon.getAttribute("data-target");
+          const input = document.getElementById(targetId);
+
+          if (input.type === "password") {
+            input.type = "text";
+            icon.src = "{{ url_for('static', filename='img/icone-olho.png') }}";
+          } else {
+            input.type = "password";
+            icon.src = "{{ url_for('static', filename='img/icone-oculte.png') }}";
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

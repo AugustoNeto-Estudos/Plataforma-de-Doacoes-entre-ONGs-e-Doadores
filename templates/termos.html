@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>SolidariHub - Termos de Uso e Política de Privacidade</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleTermos.css') }}">
+</head>
+<body>
+  <!-- Botão fixo no canto superior direito -->
+  <a href="/" class="btn-voltar-fixed">← Voltar para Home</a>
+
+  <!-- Sidebar fixa -->
+  <nav class="sidebar">
+    <div class="logo">
+      <img src="{{ url_for('static', filename='img/SolidariHub_logo_escrito_azul.png') }}" alt="SolidariHub" class="logo-img">
+    </div>
+    <ul>
+    <!-- Termos de Uso -->
+    <li><a href="#termos"><img src="{{ url_for('static', filename='img/icone-termos.png') }}" class="menu-icon"> Termos de Uso</a></li>
+    <ul class="subnav">
+      <li><a href="#introducao">Introdução</a></li>
+      <li><a href="#objetivo">Objetivo da Plataforma</a></li>
+      <li><a href="#cadastro">Cadastro e Contas de Usuário</a></li>
+      <li><a href="#compartilhamento">Uso e Compartilhamento de Informações</a></li>
+      <li><a href="#responsabilidades">Responsabilidades do Usuário</a></li>
+      <li><a href="#limitacao">Limitação de Responsabilidade</a></li>
+      <li><a href="#disposicoes">Disposições Gerais</a></li>
+    </ul>
+
+    <!-- Política de Privacidade -->
+    <li><a href="#privacidade"><img src="{{ url_for('static', filename='img/icone-privacidade.png') }}" class="menu-icon"> Política de Privacidade</a></li>
+    <ul class="subnav">
+      <li><a href="#introducao-pp">Introdução</a></li>
+      <li><a href="#coleta">Coleta de Dados Pessoais</a></li>
+      <li><a href="#uso">Uso das Informações Coletadas</a></li>
+      <li><a href="#compartilhamento-pp">Compartilhamento e Divulgação de Dados</a></li>
+      <li><a href="#seguranca">Segurança dos Dados</a></li>
+      <li><a href="#direitos">Direitos do Titular dos Dados (LGPD)</a></li>
+      <li><a href="#alteracoes">Alterações na Política de Privacidade</a></li>
+    </ul>
+  </ul>
+</nav>
+
+<!-- Conteúdo principal -->
+<main class="content">
+    <!-- Termos de Uso -->
+    <p class="update-date">Atualizado em: 06 de Novembro de 2025</p>
+    <h1 id="termos">Termos de Uso do SolidariHub</h1>
+
+    <section id="introducao">
+        <h2>1. Introdução</h2>
+        <p>Bem-vindo ao <strong>SolidariHub</strong>! Estes Termos de Uso ("Termos") regem o acesso e a utilização da nossa plataforma web, que atua como um <em>hub</em> para conectar Organizações Não Governamentais (ONGs) e Doadores, facilitando a divulgação de campanhas de doação e a manifestação de intenções de doação.</p>
+        <p>Ao acessar ou utilizar o SolidariHub, você concorda em se vincular a estes Termos, que estabelecem os direitos e obrigações de cada parte. Caso não concorde com qualquer disposição destes Termos, você não deve utilizar a plataforma.</p>
+    </section>
+
+    <section id="objetivo">
+        <h2>2. Objetivo da Plataforma</h2>
+        <p>O SolidariHub tem como objetivo principal ser um ponto de encontro digital, transparente e eficiente para:</p>
+        <ul>
+            <li>Permitir que <strong>ONGs</strong> divulguem suas necessidades e campanhas de doação.</li>
+            <li>Permitir que <strong>Doadores</strong> encontrem ONGs e manifestem suas intenções de doar itens ou recursos.</li>
+            <li>Facilitar a comunicação inicial entre ONGs e Doadores após a manifestação de interesse.</li>
+        </ul>
+        <p>O SolidariHub <strong>não</strong> é responsável pela entrega, qualidade, ou concretização das doações. Nossa função é de <strong>intermediação</strong> e <strong>conexão</strong>.</p>
+    </section>
+
+    <section id="cadastro">
+        <h2>3. Cadastro e Contas de Usuário</h2>
+        <p>Para utilizar os serviços, é necessário criar uma conta:</p>
+        
+        <h3>3.1. Cadastro de ONGs</h3>
+        <ul>
+            <li><strong>Dados Necessários:</strong> CNPJ (Cadastro Nacional da Pessoa Jurídica), nome, CEP, contato, e-mail, descrição e senha.</li>
+            <li><strong>Verificação:</strong> O SolidariHub pode submeter as ONGs a um processo de verificação de <em>status</em> e autenticidade.</li>
+            <li><strong>Responsabilidade:</strong> A ONG é a única responsável pela veracidade dos dados cadastrais e atualização dos mesmos é feita a parte, mediante solicitação ao administrador para a alteração dessas informações, especialmente o CNPJ, que será utilizado para consulta pública por Doadores.</li>
+        </ul>
+
+        <h3>3.2. Cadastro de Doadores</h3>
+        <ul>
+            <li><strong>Dados Necessários:</strong> CPF (Cadastro de Pessoa Física), nome, e-mail, contato e senha.</li>
+            <li><strong>Responsabilidade:</strong> O Doador é o único responsável pela veracidade dos dados cadastrais e atualização dos mesmos é feita a parte, mediante solicitação ao administrador para a alteração dessas informações, incluindo o CPF.</li>
+        </ul>
+
+        <h3>3.3. Segurança da Conta</h3>
+        <p>O usuário é responsável por manter a confidencialidade de sua senha e por todas as atividades que ocorram em sua conta. O SolidariHub utiliza criptografia (hashing) para proteger as senhas.</p>
+    </section>
+
+    <section id="compartilhamento">
+        <h2>4. Uso e Compartilhamento de Informações</h2>
+        <p>Ao utilizar a plataforma, o usuário concorda com o seguinte compartilhamento de dados:</p>
+
+        <h3>4.1. Compartilhamento de Dados da ONG</h3>
+        <ul>
+            <li><strong>Visibilidade Pública:</strong> O nome, descrição, CEP (para consulta de endereço no mapa) e o CNPJ da ONG são visíveis para os Doadores na página de perfil da ONG.</li>
+            <li><strong>Administração:</strong> O Administrador do sistema tem acesso aos dados da ONG, com a possibilidade de visualização parcial (censura) de dados sigilosos, como o CNPJ completo.</li>
+        </ul>
+
+        <h3>4.2. Compartilhamento de Dados do Doador</h3>
+        <ul>
+            <li><strong>Intenção de Doação:</strong> Após a manifestação de uma intenção de doação, o nome, e-mail e contato (telefone) do Doador são compartilhados com a ONG para que a doação possa ser concretizada.</li>
+            <li><strong>Administração:</strong> O Administrador do sistema tem acesso aos dados do Doador, com a possibilidade de visualização parcial (censura) de dados sigilosos, como o CPF completo.</li>
+        </ul>
+    </section>
+
+    <section id="responsabilidades">
+        <h2>5. Responsabilidades do Usuário</h2>
+        <ul>
+            <li><strong>Veracidade:</strong> Fornecer informações verdadeiras, precisas e completas no cadastro.</li>
+            <li><strong>Conduta:</strong> Não utilizar a plataforma para fins ilícitos, fraudulentos ou que violem estes Termos.</li>
+            <li><strong>Conteúdo:</strong> Ser o único responsável pelo conteúdo (campanhas, descrições, etc.) que publicar na plataforma.</li>
+            <li><strong>Interação:</strong> Assumir total responsabilidade pelas interações e negociações realizadas com outros usuários (ONGs ou Doadores) fora da plataforma.</li>
+        </ul>
+    </section>
+
+    <section id="limitacao">
+        <h2>6. Limitação de Responsabilidade</h2>
+        <p>O SolidariHub <strong>não</strong> se responsabiliza por:</p>
+        <ul>
+            <li>Danos ou prejuízos decorrentes da negociação ou concretização das doações.</li>
+            <li>Inexatidão ou desatualização das informações fornecidas por ONGs ou Doadores.</li>
+            <li>Problemas técnicos ou falhas de conexão que possam impedir o acesso ou uso da plataforma.</li>
+            <li>Uso indevido ou não autorizado dos dados compartilhados entre as partes.</li>
+        </ul>
+    </section>
+
+    <section id="disposicoes">
+        <h2>7. Disposições Gerais</h2>
+        <ul>
+            <li><strong>Modificações:</strong> O SolidariHub reserva-se o direito de modificar estes Termos a qualquer momento, mediante aviso prévio aos usuários.</li>
+            <li><strong>Rescisão:</strong> O SolidariHub pode rescindir ou suspender o acesso de qualquer usuário que viole estes Termos.</li>
+            <li><strong>Lei Aplicável:</strong> Estes Termos são regidos pelas leis da República Federativa do Brasil.</li>
+        </ul>
+    </section>
+
+    <!-- Política de Privacidade -->
+    <br>
+    <p class="update-date">Atualizado em: 06 de Novembro de 2025</p>
+    <h1 id="privacidade">Política de Privacidade do SolidariHub</h1>
+
+    <section id="introducao-pp">
+        <h2>1. Introdução</h2>
+        <p>Esta Política de Privacidade descreve como o <strong>SolidariHub</strong> coleta, usa, armazena e compartilha as informações de seus usuários (ONGs e Doadores). A privacidade e a segurança dos seus dados são prioridades para nós.</p>
+        <p>Ao utilizar a plataforma, você concorda com a coleta e o uso de suas informações conforme descrito nesta Política.</p>
+    </section>
+
+    <section id="coleta">
+        <h2>2. Coleta de Dados Pessoais</h2>
+        <p>Coletamos os seguintes dados pessoais fornecidos diretamente pelos usuários no momento do cadastro e uso da plataforma:</p>
+
+        <h3>2.1. Dados de Cadastro</h3>
+        <p>Os dados de cadastro são essenciais para a operação da plataforma:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tipo de Usuário</th>
+                    <th>Dados Coletados</th>
+                    <th>Finalidade</th>
+                    <th>Base Legal (LGPD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>ONG</strong></td>
+                    <td>CNPJ, Nome, CEP, Contato (Telefone), E-mail, Descrição.</td>
+                    <td>Identificação, autenticação, contato, verificação de autenticidade e exibição de perfil.</td>
+                    <td>Execução de contrato e Consentimento.</td>
+                </tr>
+                <tr>
+                    <td><strong>Doador</strong></td>
+                    <td>CPF, Nome, Contato (Telefone), E-mail.</td>
+                    <td>Identificação, autenticação, contato e gestão de intenções de doação.</td>
+                    <td>Execução de contrato e Consentimento.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2.2. Dados de Uso</h3>
+        <p>Coletamos informações sobre como a plataforma é acessada e utilizada, como logs de acesso, endereço IP e informações sobre o dispositivo.</p>
+    </section>
+
+    <section id="uso">
+        <h2>3. Uso das Informações Coletadas</h2>
+        <p>As informações coletadas são utilizadas para:</p>
+        <ul>
+            <li><strong>Operação da Plataforma:</strong> Gerenciar contas, autenticar usuários e fornecer as funcionalidades do SolidariHub.</li>
+            <li><strong>Comunicação:</strong> Enviar notificações, alertas e informações relacionadas ao uso da plataforma e às doações.</li>
+            <li><strong>Segurança:</strong> Proteger a plataforma e os usuários contra fraudes e atividades não autorizadas.</li>
+            <li><strong>Melhoria:</strong> Analisar o uso para aprimorar a experiência do usuário e as funcionalidades do sistema.</li>
+        </ul>
+    </section>
+
+    <section id="compartilhamento-pp">
+        <h2>4. Compartilhamento e Divulgação de Dados</h2>
+        <p>O SolidariHub é uma plataforma de conexão, e o compartilhamento de dados é essencial para o seu funcionamento:</p>
+
+        <h3>4.1. Compartilhamento entre Usuários</h3>
+        <ul>
+            <li><strong>ONGs para Doadores:</strong> O CNPJ (para consulta de autenticidade) e o CEP (para consulta de endereço via mapa) da ONG são exibidos publicamente no perfil da ONG para os Doadores.</li>
+            <li><strong>Doadores para ONGs:</strong> Após a manifestação de uma intenção de doação, o Nome, E-mail e Contato (Telefone) do Doador são compartilhados com a ONG para que a comunicação e a concretização da doação possam ocorrer.</li>
+        </ul>
+
+        <h3>4.2. Acesso do Administrador</h3>
+        <p>O Administrador do sistema tem acesso aos dados de cadastro de ONGs e Doadores para fins de gestão, moderação e suporte. Dados sensíveis (CNPJ e CPF) são visualizados de forma parcialmente censurada, garantindo uma camada adicional de proteção.</p>
+
+        <h3>4.3. Terceiros</h3>
+        <p>Podemos compartilhar seus dados com terceiros apenas nas seguintes circunstâncias:</p>
+        <ul>
+            <li>Com provedores de serviços que nos auxiliam na operação da plataforma (ex: serviços de hospedagem, segurança).</li>
+            <li>Para cumprir obrigações legais ou ordens judiciais.</li>
+        </ul>
+    </section>
+
+    <section id="seguranca">
+        <h2>5. Segurança dos Dados</h2>
+        <p>Adotamos medidas técnicas e organizacionais para proteger os dados pessoais contra acesso não autorizado, alteração, divulgação ou destruição.</p>
+        <ul>
+            <li><strong>Criptografia:</strong> Senhas são armazenadas utilizando criptografia (hashing) irreversível.</li>
+            <li><strong>Acesso Restrito:</strong> O acesso aos dados é restrito a funcionários e administradores que precisam deles para desempenhar suas funções.</li>
+        </ul>
+    </section>
+
+    <section id="direitos">
+        <h2>6. Direitos do Titular dos Dados (LGPD)</h2>
+        <p>Em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018), você tem o direito de:</p>
+        <ul>
+            <li><strong>Acesso:</strong> Obter confirmação e acesso aos dados que processamos sobre você.</li>
+            <li><strong>Correção:</strong> Solicitar a correção de dados incompletos, inexatos ou desatualizados.</li>
+            <li><strong>Exclusão:</strong> Solicitar a exclusão de seus dados pessoais (Direito ao Esquecimento), ressalvadas as obrigações legais de retenção.</li>
+            <li><strong>Revogação do Consentimento:</strong> Revogar o consentimento para o processamento de dados a qualquer momento.</li>
+        </ul>
+        <p>Para exercer seus direitos, entre em contato conosco através dos canais de suporte da plataforma.</p>
+    </section>
+
+    <section id="alteracoes">
+        <h2>7. Alterações na Política de Privacidade</h2>
+        <p>Reservamo-nos o direito de atualizar esta Política de Privacidade a qualquer momento. Notificaremos os usuários sobre quaisquer alterações publicando a nova Política nesta página.</p>
+
+        <h3>7.1. Nota sobre o Canal de Comunicação (Contexto Acadêmico)</h3>
+        <p>O canal de contato oficial (suporte@solidarihub.br), no contexto deste Projeto de Conclusão de Curso (PFC), um e-mail fictício gerenciado manualmente pela equipe de desenvolvimento. Em um cenário de produção e escalabilidade, este canal seria substituído por um serviço de e-mail profissional (SMTP) para garantir a automação e a segurança na comunicação, incluindo processos como a recuperação de senha.</p>
+    </section>
+</main>
+</body>
+</html>

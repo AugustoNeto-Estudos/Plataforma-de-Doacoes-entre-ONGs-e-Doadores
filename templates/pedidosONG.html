@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedidos Recebidos | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stylePedidosONG.css') }}">
+</head>
+<body>
+  <!-- Botão voltar -->
+  <a href="{{ url_for('menu_ong.menu_ong') }}" class="btn-voltar">← Voltar ao Menu ONG</a>
+
+  <div class="container">
+    <h1>
+      <img src="static/img/icone-pedido-azul.png" alt="Pedidos Recebidos" class="pedido-icon">
+      Pedidos Recebidos
+    </h1>
+
+    <!-- Mensagens de sucesso/erro -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, msg in messages %}
+            <div class="flash {{ category }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Filtros -->
+    <form method="POST" class="filtros-form">
+      <select name="status">
+        <option value="Todos" {% if status_selecionado == "Todos" %}selected{% endif %}>Todos</option>
+        <option value="Em andamento" {% if status_selecionado == "Em andamento" %}selected{% endif %}>Em andamento</option>
+        <option value="Finalizado" {% if status_selecionado == "Finalizado" %}selected{% endif %}>Finalizado</option>
+        <option value="Cancelado" {% if status_selecionado == "Cancelado" %}selected{% endif %}>Cancelado</option>
+      </select>
+      <input type="text" name="busca"
+             placeholder="Buscar por Doador ou Campanha"
+             value="{{ busca }}"
+             class="input-busca"
+             style="background-image:url('static/img/icone-lupa-cinza.png'); background-repeat:no-repeat; background-position:8px center; padding-left:32px;">
+      <button type="submit" class="btn-amazon">Filtrar</button>
+    </form>
+
+    {% macro render_pedidos(lista, status) %}
+      {% if lista %}
+        <h2>{{ status|safe }}</h2>
+        {% for p in lista %}
+          {% set lista_sel = mapa_listas.get(p.get('ID_Lista'), {}) %}
+          {% set doador_sel = mapa_doadores.get(p.get('ID_Doador'), {}) %}
+          <div class="card">
+            <p><strong>Campanha:</strong> {{ lista_sel.get('titulo', 'Campanha não encontrada') }}</p>
+            <p><strong>Doador:</strong> {{ doador_sel.get('nome', 'N/A') }}</p>
+            <p><strong>Status:</strong> {{ STATUS_MAP.get(p.status, 'Desconhecido') }}</p>
+            <p><strong>Data:</strong> {{ p.data_criacao }}</p>
+
+            {% set itens = exibir_pedidos_itens(p.ID_Pedido) %}
+            {% if itens %}
+              <h4>Itens do pedido:</h4>
+              <ul>
+                {% for item in itens %}
+                  {% set det = mapa_itens.get(item.ID_Item, {}) %}
+                  <li>
+                    {{ det.get('categoria', 'Item') }} - {{ det.get('subcategoria', '') }}: {{ item.quantidade }} unidades
+                    {% if item.observacao %}
+                      <br><small>
+                        <img src="static/img/icone-observacao.png" alt="Obs" class="obs-icon">
+                        {{ item.observacao }}
+                      </small>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if p.status == 0 %}
+              <button type="button" class="btn-amazon"
+                onclick="abrirModalFinalizar('{{ p.ID_Pedido }}','{{ doador_sel.get('nome','') }}')">
+                <img src="static/img/icone-aprovado.png" class="menu-icon"> Finalizar Pedido
+              </button>
+              <button type="button" class="btn-danger"
+                onclick="abrirModalCancelar('{{ p.ID_Pedido }}')">
+                <img src="static/img/icone-reprovado-branco.png" class="menu-icon"> Cancelar Pedido
+              </button>
+            {% elif p.status == 1 %}
+              <button type="button" class="btn-recibo" onclick="abrirModalRecibo('{{ p.ID_Pedido }}')">
+                <img src="static/img/icone-recibo.png" class="menu-icon"> Gerar Recibo
+              </button>
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% else %}
+      {% endif %}
+    {% endmacro %}
+
+    <!-- Renderização condicional -->
+    {% if status_selecionado == "Todos" %}
+      {{ render_pedidos(em_andamento, '<img src="static/img/icone-andamento.png" class="menu-icon"> Pedidos em andamento' | safe) }}
+      {{ render_pedidos(finalizados, '<img src="static/img/icone-finalizado.png" class="menu-icon"> Pedidos finalizados' | safe) }}
+      {{ render_pedidos(cancelados, '<img src="static/img/icone-reprovado.png" class="menu-icon"> Pedidos cancelados' | safe) }}
+    {% elif status_selecionado == "Em andamento" %}
+      {{ render_pedidos(em_andamento, '<img src="static/img/icone-andamento.png" class="menu-icon"> Pedidos em andamento' | safe) }}
+    {% elif status_selecionado == "Finalizado" %}
+      {{ render_pedidos(finalizados, '<img src="static/img/icone-finalizado.png" class="menu-icon"> Pedidos finalizados' | safe) }}
+    {% elif status_selecionado == "Cancelado" %}
+      {{ render_pedidos(cancelados, '<img src="static/img/icone-reprovado.png" class="menu-icon"> Pedidos cancelados' | safe) }}
+    {% endif %}
+  </div>
+
+  <!-- Modal Finalizar Pedido -->
+  <div id="modal-finalizar" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <a href="javascript:void(0)" class="close-x" onclick="fecharModal('modal-finalizar')">×</a>
+      <h2><img src="static/img/icone-alerta.png" class="menu-icon"> Confirmar Finalização</h2>
+      <p id="texto-finalizar" class="warning-text"></p>
+      <form method="GET" id="form-finalizar">
+        <button type="submit" class="btn-confirmar">
+          <img src="static/img/icone-aprovado-branco.png" class="menu-icon"> Confirmar Finalização
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Cancelar Pedido -->
+  <div id="modal-cancelar" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <a href="javascript:void(0)" class="close-x" onclick="fecharModal('modal-cancelar')">×</a>
+      <h2><img src="static/img/icone-alerta.png" class="menu-icon"> Confirmar Cancelamento</h2>
+      <p class="warning-text">Tem certeza que deseja cancelar este pedido?</p>
+      <form method="GET" id="form-cancelar">
+        <button type="submit" class="btn-cancelar">
+          <img src="static/img/icone-reprovado-branco.png" class="menu-icon"> Confirmar Cancelamento
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Gerar Recibo -->
+  <div id="modal-recibo" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <a href="javascript:void(0)" class="close-x" onclick="fecharModal('modal-recibo')">×</a>
+      <h2><img src="static/img/icone-recibo.png" class="menu-icon"> Gerar Recibo de Doação</h2>
+      <form method="POST" id="form-recibo" target="_blank">
+        <label for="responsavel">Nome do responsável pela ONG:</label>
+        <input type="text" name="responsavel" id="responsavel" placeholder="Ex: Maria da Silva" required>
+        <button type="submit" class="btn-confirmar">
+          <img src="static/img/icone-recibo-branco.png" class="menu-icon"> Gerar Recibo
+        </button>
+      </form>
+    </div>
+  </div>
+
+    <script>
+    function abrirModalFinalizar(idPedido, nomeDoador) {
+      document.getElementById("texto-finalizar").innerText =
+        `Ao finalizar o pedido, você confirma que a entrega dos itens do doador ${nomeDoador} está de acordo com o combinado.`;
+      document.getElementById("form-finalizar").action = "/FinalizarPedido/" + idPedido;
+      document.getElementById("modal-finalizar").style.display = "flex";
+    }
+    function abrirModalCancelar(idPedido) {
+      document.getElementById("form-cancelar").action = "/CancelarPedido/" + idPedido;
+      document.getElementById("modal-cancelar").style.display = "flex";
+    }
+    function abrirModalRecibo(idPedido) {
+      const form = document.getElementById("form-recibo");
+      form.action = "/Recibo/" + idPedido;
+      document.getElementById("modal-recibo").style.display = "flex";
+    }
+    function fecharModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+  </script>
+
+  <script>
+    // Fecha a modal se clicar fora do conteúdo
+    window.onclick = function(event) {
+      const modais = document.getElementsByClassName("modal-overlay");
+      for (let i = 0; i < modais.length; i++) {
+        if (event.target === modais[i]) {
+          modais[i].style.display = "none";
+        }
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Intenções Recebidas | SolidariHub</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleIntencoesONG.css') }}">
+  <style>
+    /* Tooltip container */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Tooltip text */
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 220px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 6px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%; /* acima do botão */
+      left: 50%;
+      margin-left: -110px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    /* Mostrar tooltip ao passar o mouse */
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Botão voltar -->
+  <a href="{{ url_for('menu_ong.menu_ong') }}" class="btn-voltar">← Voltar ao Menu ONG</a>
+
+  <div class="container">
+    <h1>
+      <img src="static/img/icone-intencao-azul.png" alt="Intenções" class="intencao-icon">
+      Intenções Recebidas
+    </h1>
+
+    <!-- Mensagens de sucesso/erro -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, msg in messages %}
+            <div class="flash {{ category }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Filtros -->
+    <form method="POST" class="filtros-form">
+      <select name="status">
+        <option value="Todos" {% if status_selecionado == "Todos" %}selected{% endif %}>Todos</option>
+        <option value="Pendente" {% if status_selecionado == "Pendente" %}selected{% endif %}>Pendente</option>
+        <option value="Aprovado" {% if status_selecionado == "Aprovado" %}selected{% endif %}>Aprovado</option>
+        <option value="Reprovado" {% if status_selecionado == "Reprovado" %}selected{% endif %}>Reprovado</option>
+        <option value="Finalizado" {% if status_selecionado == "Finalizado" %}selected{% endif %}>Finalizado</option>
+      </select>
+      <input type="text" name="busca"
+             placeholder="Buscar por doador ou campanha"
+             value="{{ busca }}"
+             class="input-busca"
+             style="background-image:url('static/img/icone-lupa-cinza.png'); background-repeat:no-repeat; background-position:8px center; padding-left:32px;">
+      <button type="submit" class="btn-amazon">Filtrar</button>
+    </form>
+
+  {% macro render_intencoes(lista, titulo) %}
+  {% if lista %}
+    <h2>{{ titulo|safe }}</h2>
+    {% for i in lista %}
+      {% set lista_sel = mapa_listas[i.ID_Lista] %}
+      {% set doador = mapa_doadores[i.ID_Doador] %}
+      <div class="card">
+        <p><strong>Campanha:</strong> {{ lista_sel.titulo }}</p>
+        <p><strong>Doador:</strong> {{ doador.nome }}</p>
+        <p><strong>Email:</strong> {{ doador.email }} | <strong>Contato:</strong> {{ doador.contato }}</p>
+        <p><strong>Data:</strong> {{ i.data_criacao }}</p>
+        <p><strong>Status:</strong> {{ STATUS_MAP[i.status] }}</p>
+
+        <!-- Itens sempre visíveis -->
+        <h4>Itens pretendidos:</h4>
+
+        {% if i.status == 0 %}
+          <!-- Pendente: formulário com inputs e botões -->
+          <form method="POST" action="{{ url_for('intencoes_ong.aprovar_intencao', id=i.ID_Intencao) }}">
+            {% for item in listar_itens_intencao(i.ID_Intencao) %}
+              {% set det = mapa_itens[item.ID_Item] %}
+              <p>
+                {{ det.categoria }} - {{ det.subcategoria }}: {{ item.quantidade_pretendida }} unidades
+                <input type="text" name="obs_{{ item.ID_Item }}"
+                       placeholder="Observação: Digite aqui a especificação do item acordado com Doador (opcional)">
+              </p>
+            {% endfor %}
+
+            <div class="acoes-intencao">
+              <div class="tooltip">
+                <button type="submit" class="btn-amazon">
+                  <img src="static/img/icone-aprovado.png" class="menu-icon"> Aprovar
+                </button>
+                <span class="tooltiptext">Ao aprovar, o doador precisará confirmar os itens e observações.</span>
+              </div>
+              <div class="tooltip">
+                <a href="{{ url_for('intencoes_ong.recusar_intencao', id=i.ID_Intencao) }}" class="btn-danger">
+                  <img src="static/img/icone-reprovado-branco.png" class="menu-icon"> Recusar
+                </a>
+                <span class="tooltiptext">Recusar a intenção. Recomenda-se notificar o doador sobre o motivo.</span>
+              </div>
+            </div>
+          </form>
+
+        {% else %}
+          <!-- Outros status: apenas exibe itens e observações -->
+          {% for item in listar_itens_intencao(i.ID_Intencao) %}
+            {% set det = mapa_itens[item.ID_Item] %}
+            <p>
+              {{ det.categoria }} - {{ det.subcategoria }}: {{ item.quantidade_pretendida }} unidades
+              {% if item.observacao %}
+                <span class="obs-ong">
+                  <img src="static/img/icone-observacao.png" alt="Observação" class="menu-icon">
+                  Observação da ONG: {{ item.observacao }}
+                </span>
+              {% endif %}
+            </p>
+          {% endfor %}
+
+          {% if i.status == 1 %}
+            <p><img src="static/img/icone-ampulheta.png" class="menu-icon"> Aguardando confirmação do doador.</p>
+          {% elif i.status == 2 %}
+            <a href="{{ url_for('intencoes_ong.reverter_intencao', id=i.ID_Intencao) }}" class="btn-secondary">
+              <img src="static/img/icone-voltar.png" class="menu-icon"> Reverter para Pendente
+            </a>
+          {% elif i.status == 3 %}
+            <a href="{{ url_for('pedidos_ong.pedidos_ong') }}" class="btn-amazon">
+              <img src="static/img/icone-pedido-azul.png" class="menu-icon"> Ver Pedido
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+  {% endif %}
+{% endmacro %}
+
+<!-- Renderização condicional -->
+{% if status_selecionado == "Todos" %}
+  {{ render_intencoes(pendentes, '<img src="static/img/icone-ampulheta.png" class="menu-icon"> Intenções Pendentes' | safe) }}
+  {{ render_intencoes(aprovadas, '<img src="static/img/icone-aprovado.png" class="menu-icon"> Intenções Aprovadas' | safe) }}
+  {{ render_intencoes(reprovadas, '<img src="static/img/icone-reprovado.png" class="menu-icon"> Intenções Reprovadas' | safe) }}
+  {{ render_intencoes(finalizadas, '<img src="static/img/icone-finalizado.png" class="menu-icon"> Intenções Finalizadas' | safe) }}
+{% elif status_selecionado == "Pendente" %}
+  {{ render_intencoes(pendentes, '<img src="static/img/icone-ampulheta.png" class="menu-icon"> Intenções Pendentes' | safe) }}
+{% elif status_selecionado == "Aprovado" %}
+  {{ render_intencoes(aprovadas, '<img src="static/img/icone-aprovado.png" class="menu-icon"> Intenções Aprovadas' | safe) }}
+{% elif status_selecionado == "Reprovado" %}
+  {{ render_intencoes(reprovadas, '<img src="static/img/icone-reprovado.png" class="menu-icon"> Intenções Reprovadas' | safe) }}
+{% elif status_selecionado == "Finalizado" %}
+  {{ render_intencoes(finalizadas, '<img src="static/img/icone-finalizado.png" class="menu-icon"> Intenções Finalizadas' | safe) }}
+{% endif %}
+  </div>
+</body>
+</html>
