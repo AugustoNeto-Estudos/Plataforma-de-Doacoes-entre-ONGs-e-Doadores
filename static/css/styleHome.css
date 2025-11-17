@@ -1,0 +1,208 @@
+/* ===== Layout base e fix para overflow ===== */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f6f8;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;  /* remove scrollbar horizontal do iframe */
+  overflow-y: auto;    /* scroll vertical apenas quando necessário */
+}
+
+.logo-img {
+  height: 50px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.hero-logo {
+  height: 150px;
+  margin: 0;
+}
+
+.icon-btn {
+  height: 35px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* Wrapper principal ocupa o espaço e cola o footer no fim */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: linear-gradient(90deg, #232f3e, #3a4a63);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 36px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Select estilizado */
+.menu label {
+  margin-right: 8px;
+}
+
+.menu select {
+  padding: 10px 14px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #d0d7e2;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: all 0.25s ease;
+  appearance: none; /* remove setinha padrão (em alguns browsers) */
+  background-image: linear-gradient(45deg, transparent 50%, #888 50%), 
+                    linear-gradient(135deg, #888 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 5px), calc(100% - 12px) calc(50% - 5px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.menu select:hover {
+  border-color: #ff9900;
+  box-shadow: 0 4px 12px rgba(255,153,0,0.25);
+}
+
+/* ===== HERO ===== */
+.hero-section {
+  background-image: url("https://images.pexels.com/photos/6995109/pexels-photo-6995109.jpeg");
+  background-size: cover;
+  background-position: center;
+  min-height: 40vh;   /* reduz altura da hero */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 80px;
+  color: white;
+  position: relative;
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+.hero-section h1, .hero-section h2, .hero-section h3, .hero-buttons {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #fdc121;
+}
+
+.hero-section h1 {
+  font-size: 2rem;    /* menor que antes */
+  margin-bottom: 8px;
+}
+
+.hero-section h3 {
+  font-size: 1.1rem;  /* menor */
+  margin-bottom: 16px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+/* ===== BENEFÍCIOS (lado a lado) ===== */
+.benefits {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 24px;
+  padding: 50px 40px;
+  background: #fff;
+}
+
+.benefit {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #f9fafb;
+  border: 1px solid #e9eef3;
+  border-radius: 12px;
+  padding: 26px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.benefit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.benefit .icon {
+  font-size: 2rem;
+  width: 42px;   /* tamanho do ícone */
+  height: 42px;
+  margin-bottom: 10px;
+  color: #ff9900;
+  display: block;
+}
+
+.benefit h3 {
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+  color: #232f3e;
+}
+
+.benefit p {
+  font-size: 0.98rem;
+  color: #5b6675;
+  margin: 0;
+}
+
+/* ===== BOTÕES ===== */
+.big-button-link {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  background: #ff9900;
+  color: #fff !important;
+  border-radius: 8px;
+  text-decoration: none !important;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.big-button-link:hover {
+  background: #e68a00;
+  transform: translateY(-2px);
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #232f3e;
+  color: white;
+  text-align: center;
+  padding: 18px;
+  margin: 0;         /* sem espaço extra */
+  border-top: 1px solid rgba(255,255,255,0.08);
+}

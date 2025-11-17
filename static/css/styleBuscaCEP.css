@@ -1,0 +1,213 @@
+/* === Base === */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fff; /* fundo branco fixo */
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Container com degradê */
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 40px 20px;
+  border-radius: 10px;
+
+  background: linear-gradient(to bottom, #fcf5cd 0%, #fcec85 100%);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Títulos */
+h1, h2, h3, h4 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+/* Ícone de informação */
+.info-icon {
+  position: relative;
+  display: inline-block;
+  margin-left: -4px; 
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.info-icon img {
+  width: 14px;   
+  height: 14px;
+  position: relative;
+  top: -12px;    
+}
+
+/* Tooltip */
+.tooltip-text {
+  visibility: hidden;
+  width: 240px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 110%;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.info-icon:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+/* Botão voltar */
+.btn-voltar {
+  display: inline-block;
+  margin: 15px;
+  padding: 10px 20px;
+  background-color: #3452a3;
+  border: 1px solid #2f488f;
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+.btn-voltar:hover {
+  background-color: #4d74bb;
+}
+
+/* Formulário de busca */
+.busca-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 30px;
+  align-items: center;
+}
+.busca-form input[type="text"] {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+  font-size: 15px;
+  background-color: #fff;
+}
+.busca-form button {
+  padding: 12px 20px;
+  background-color: #3452a3;
+  border: 1px solid #2f488f;
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.busca-form button:hover {
+  background-color: #4d74bb;
+}
+
+.input-busca {
+  background-size: 16px 16px;
+}
+
+.menu-icon {
+  height: 40px;
+  width: 40px;
+  vertical-align: middle;
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
+.btn-icon {
+  height: 30px;
+  width: 30px;
+  vertical-align: middle;
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
+/* Cards */
+.card {
+  background-color: white;
+  border: 1px solid #d0d7e2;
+  border-left: 6px solid #ffd814; /* detalhe amarelo */
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.card:hover {
+  transform: scale(1.02);
+  background-color: #f1f1f0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.card h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+.card p {
+  margin: 6px 0;
+}
+.card button {
+  margin-top: 10px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  background-color: #3452a3;
+  color: #fff;
+}
+.card button:hover {
+  background-color: #4d74bb;
+}
+
+/* Info */
+.info {
+  background-color: #cddfff;
+  color: #043c85;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 700px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.close-x {
+  position: absolute;
+  top: 10px; right: 15px;
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: #333;
+  cursor: pointer;
+}

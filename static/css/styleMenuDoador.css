@@ -1,0 +1,436 @@
+/* === Reset e base === */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f6f8;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* ====== HEADER ====== */
+.header {
+  background-color: #232f3e; /* Azul escuro Amazon */
+  padding: 12px 20px;
+  color: #fff;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-img {
+    height: 50px;
+    vertical-align: middle;
+}
+
+.menu-icon {
+    height: 20px;
+    width: 20px;
+    margin-right: 8px;
+}
+
+.menu-icon {
+  height: 18px;
+  width: 18px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-links a,
+.nav-links button {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.nav-links a:hover,
+.nav-links button:hover {
+  color: #ffd814;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Botão de sair */
+.btn-voltar {
+  background: none;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-voltar:hover {
+  color: #fa6560;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown de notificações */
+.dropdown {
+  position: relative;
+}
+
+.notif-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.notif-btn:hover {
+  color: #ffd814;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #fff;
+  min-width: 220px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.dropdown-content a,
+.dropdown-content span {
+  display: block;
+  padding: 10px 14px;
+  color: #232f3e;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.dropdown-content a:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* === Destaque dinâmico === */
+.highlight {
+  color: #ffffff !important;
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  50% { background: #ffe066; }
+}
+
+/* === Títulos === */
+h1 {
+  text-align: center;
+  color: #232f3e;
+  margin-bottom: 30px;
+}
+h2 {
+  margin-top: 40px;
+  color: #3a4a63;
+}
+
+/* === Campo de busca === */
+.filtro-cep {
+  margin: 20px auto 30px auto;
+  max-width: 1000px;
+}
+.filtro-cep form {
+  display: flex;
+  gap: 10px;
+}
+.filtro-cep input[name="busca"] {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px 0 0 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+.filtro-cep button {
+  padding: 12px 16px;
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+  font-weight: bold;
+}
+.filtro-cep button:hover {
+  background-color: #e68a00;
+}
+
+/* === Cards de listas === */
+.card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+/* === Cards de listas === */
+.card {
+  background-color: #fafafa; /* mais escuro que branco puro */
+  border: 1px solid #d0d7e2;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: all 0.25s ease;
+  position: relative;
+}
+.card:hover {
+  background-color: #f0f0f0; /* escurece */
+  transform: scale(1.02);    /* aumenta levemente */
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+.card h3, .card h4 {
+  margin-top: 0;
+  color: #ff9900;
+}
+
+/* === Detalhe lateral amarelo === */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background-color: #ffd814; /* amarelo */
+  border-radius: 10px 0 0 10px;
+}
+
+/* === Itens dentro da lista === */
+.item-doacao {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
+.item-doacao span {
+  flex: 1;
+}
+.item-doacao input[type="number"] {
+  width: 80px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* === Botões === */
+.menu-btn {
+  padding: 10px 20px;
+  background-color: #ff9900;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+.menu-btn:hover {
+  background-color: #e68a00;
+}
+.btn-voltar {
+  background: #d9534f;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: white !important;
+}
+.btn-voltar:hover {
+  background: #c9302c;
+}
+
+/* === Modal === */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.modal-content {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 90%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  position: relative;
+}
+.modal-content h2 {
+  color: #ff9900;
+  margin-bottom: 10px;
+}
+.modal-actions {
+  display: flex;
+  gap: 12px; /* espaço entre os botões */
+  margin-top: 20px;
+}
+
+.modal-actions .menu-btn,
+.modal-actions .logout-btn {
+  flex: 1;
+  margin: 0 5px;
+  text-align: center;
+}
+
+.modal-actions .btn-doar,
+.modal-actions .btn-ong {
+  flex: 1; /* ocupa o mesmo espaço */
+  text-align: center;
+  padding: 12px 0; /* mesma altura */
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.icon-doacao-modal {
+  height: 28px;   /* maior que o padrão */
+  width: 28px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.icon-comentario-modal {
+  height: 26px;
+  width: 26px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+
+/* Botão X no modal */
+.close-x {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #666;
+  text-decoration: none;
+}
+.close-x:hover {
+  color: #000;
+}
+
+/* Botão amarelo */
+.btn-doar {
+  background-color: #ffd814;
+  border: 1px solid #fcd200;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  color: #111;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.btn-doar:hover {
+  background-color: #f7ca00;
+  transform: translateY(-1px);
+}
+
+/* Botão azul */
+.btn-ong {
+  background-color: #104f8f;
+  color: white;
+  text-decoration: none;
+  display: flex;          /* centraliza texto */
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.btn-ong:hover {
+  background-color: #083d72;
+  transform: translateY(-1px);
+}
+
+.form-alert {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+.menu-alert {
+  background-color: #dff0d8;
+  color: #3c763d;
+  border: 1px solid #c3e6cb;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 20px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* === Toasts === */
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+}
+.toast {
+  padding: 12px 18px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  animation: fadein 0.5s, fadeout 0.5s 4.5s;
+}
+
+.toast img.toast-icon {
+  height: 18px;   /* controla o tamanho */
+  width: 18px;    /* mantém proporção quadrada */
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.toast.info { background: #17a2b8; }
+.toast.warning { background: #ffc107; color: #000; }
+.toast.success { background: #28a745; }
+
+@keyframes fadein {
+  from { opacity: 0; right: 0; }
+  to { opacity: 1; right: 20px; }
+}
+@keyframes fadeout {
+  from { opacity: 1; right: 20px; }
+  to { opacity: 0; right: 0; }
+}

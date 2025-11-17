@@ -1,0 +1,262 @@
+/* Background geral */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: url("https://images.pexels.com/photos/7130566/pexels-photo-7130566.jpeg") no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Container central */
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 12px;
+}
+
+/* Botão voltar */
+.btn-voltar {
+  display: inline-block;
+  margin: 15px;
+  padding: 10px 20px;
+  background-color: #ffd814;
+  border: 1px solid #fcd200;
+  color: #111;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+.btn-voltar:hover {
+  background-color: #f7ca00;
+}
+
+/* Cards */
+.card {
+  background-color: #fff;
+  border: 1px solid #d0d7e2;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Inputs e selects padrão (dentro dos cards) */
+form input[type="text"],
+form input[type="number"],
+form textarea,
+form select,
+.choices {
+  width: 100%;
+  max-width: 600px; /* mantém estilo antigo */
+  box-sizing: border-box;
+  padding: 10px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccd6dd;
+  font-size: 0.95rem;
+}
+
+/* Inputs dentro da div Criar nova Campanha ocupam toda a largura */
+.card:first-of-type form input[type="text"],
+.card:first-of-type form textarea,
+.card:first-of-type form select,
+.card:first-of-type form .choices {
+  max-width: 100%;
+}
+
+/* Força o multiselect do catálogo a ocupar toda a largura no card de criação */
+.card:first-of-type .choices,
+.card:first-of-type .choices__inner {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+
+/* Barra de busca/filtro */
+.filter-inline {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 20px 0;
+}
+.input-busca {
+  width: 300px;
+  padding: 10px 10px 10px 32px;
+  border-radius: 8px;
+  border: 1px solid #ccd6dd;
+  font-size: 0.95rem;
+  background-color: #fff;
+  background-image: url("../img/icone-lupa-cinza.png");
+  background-repeat: no-repeat;
+  background-position: 8px center;
+}
+
+/* Choices.js */
+.choices__inner {
+  border-radius: 8px !important;
+  border: 1px solid #ccd6dd !important;
+  padding: 8px 10px !important;
+  min-height: 44px;
+  background: #fff;
+}
+.choices__list--multiple .choices__item {
+  background-color: #eef3ff;
+  border: 1px solid #c7d2fe;
+  color: #111;
+  border-radius: 20px;
+  padding: 4px 8px;
+  margin: 2px;
+  display: inline-flex;
+  align-items: center;
+}
+/* Botão de remoção com ícone */
+.choices__list--multiple .choices__item .choices__button {
+  margin-left: 6px;
+  border: none;
+  background: url("../img/icone-close.png") no-repeat center center;
+  background-size: 12px 12px;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  text-indent: -9999px;
+  overflow: hidden;
+}
+.choices__list--multiple .choices__item .choices__button::before,
+.choices__list--multiple .choices__item .choices__button::after {
+  content: none !important;
+}
+
+/* Item expansível */
+.item-expander {
+  background: #f9fbfc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+.item-expander > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.item-expander > summary::-webkit-details-marker {
+  display: none;
+}
+.item-expander > summary:after {
+  content: "▾";
+  float: right;
+  color: #6b7280;
+}
+
+.item-expander :hover{
+  transform: scale(1.01);
+}
+
+/* Botões */
+.card button,
+.btn-amazon,
+.btn-secondary,
+.btn-danger {
+  font-weight: bold;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Estilo Amazon */
+.btn-amazon {
+  background-color: #ffd814;
+  border-color: #fcd200;
+  color: #111;
+}
+.btn-amazon:hover {
+  background-color: #f7ca00;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: #d5d9d9;
+  border-color: #004b7e;
+  color: #111;
+}
+.btn-secondary:hover {
+  background-color: #a1bbcc;
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  border-color: #c9302c;
+  color: #fff;
+}
+.btn-danger:hover {
+  background-color: #c9302c;
+  transform: translateY(-1px);
+}
+
+/* Organização dos botões dentro dos cards */
+.linha-alterar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.linha-acoes {
+  display: flex;
+  gap: 10px;
+}
+
+/* Flash messages */
+.flash-messages {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 16px;
+}
+.flash-messages li {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* Helpers */
+hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 20px 0;
+}
+
+/* Ícones */
+.menu-icon {
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+.box-icon {
+  height: 28px;
+  width: 28px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.icon-feedback {
+  height: 16px;
+  width: 16px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.input-busca {
+  background-size: 16px 16px;
+}
