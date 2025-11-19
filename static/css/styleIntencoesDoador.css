@@ -213,8 +213,22 @@ h1, h2 {
 }
 
 .acoes-intencao {
-  margin-top: 12px;    /* separa os botões das observações */
+  margin-top: 12px;
+  display: flex;
+  gap: 12px;       /* espaço entre os botões */
+  flex-wrap: wrap; /* quebra linha se faltar espaço */
 }
+
+.acoes-intencao button {
+  min-width: 180px;       
+  padding: 12px 20px;     
+  font-size: 1rem;       
+  display: inline-flex;   
+  align-items: center;
+  justify-content: center;
+  gap: 6px;              
+}
+
 
 /* ====== MODAL ====== */
 .modal-overlay {
@@ -300,4 +314,40 @@ h1, h2 {
 .btn-cancelar:active {
   background-color: #bd2130;
   transform: translateY(0);
+}
+
+/* Destaque para email e contato da ONG */
+.ong-info {
+  color: #0077cc;      
+  text-decoration: underline;
+  cursor: help;
+  position: relative;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 280px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* aparece acima */
+  left: 50%;
+  margin-left: -140px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 13px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }

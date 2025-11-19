@@ -298,7 +298,47 @@ h1, h2 {
   margin-right: 6px;
 }
 
-/* Container para botões de ação */
 .acoes-intencao {
   margin-top: 12px;
+  display: flex;
+  gap: 12px;          /* espaço entre os botões */
+  flex-wrap: wrap;    /* se faltar espaço, quebra linha */
 }
+
+
+/* Destaque para email e contato do doador */
+.doador-info {
+  color: #0077cc;      
+  text-decoration: underline;
+  cursor: help;
+  position: relative;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 280px;
+  background-color: #333;
+  color: #fff;
+  text-align: left;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* aparece acima */
+  left: 50%;
+  margin-left: -140px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 13px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
