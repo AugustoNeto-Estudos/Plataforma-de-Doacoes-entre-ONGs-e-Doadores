@@ -95,6 +95,29 @@ def api_localizacao():
             return jsonify({"erro": f"Erro ao buscar localização via CEP: {str(e)}"}), 500
 
     # Fallback: endereço textual
+    # Se não achou, tenta pelo endereço textual do Viacep
+        endereco_viacep = buscar_endereco(cep)
+        if endereco_viacep and "erro" not in endereco_viacep:
+            partes = [
+                endereco_viacep.get("logradouro", ""),
+                endereco_viacep.get("bairro", ""),
+                endereco_viacep.get("localidade", ""),
+                endereco_viacep.get("uf", ""),
+                "Brasil",
+            ]
+            endereco_texto = ", ".join([p for p in partes if p.strip()])
+            try:
+                location = geolocator.geocode(endereco_texto, country_codes="br")
+                if location:
+                    return jsonify({
+                        "latitude": location.latitude,
+                        "longitude": location.longitude,
+                        "endereco": endereco_texto,
+                    })
+            except Exception as e:
+                return jsonify({"erro": f"Erro ao buscar localização via endereço: {str(e)}"}), 500
+
+    #  Se não for CEP, tenta direto como texto
     endereco_texto = endereco if "Brasil" in endereco else f"{endereco}, Brasil"
     endereco_texto = re.sub(r"\s+", " ", endereco_texto).strip()
 

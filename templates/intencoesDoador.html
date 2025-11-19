@@ -62,7 +62,23 @@
       <div class="card">
         <p><strong>Campanha:</strong> {{ lista_sel.titulo }}</p>
         <p><strong>ONG:</strong> {{ ong.nome }}</p>
-        <p><strong>Email:</strong> {{ ong.email }} | <strong>Contato:</strong> {{ ong.contato }}</p>
+        <p>
+          <strong>Email:</strong>
+          <span class="ong-info tooltip">
+            {{ ong.email }}
+            <span class="tooltiptext">
+              Use este email para entrar em contato com a ONG e combinar como será feita a doação e as especificações dos itens.
+            </span>
+          </span>
+          |
+          <strong>Contato:</strong>
+          <span class="ong-info tooltip">
+            {{ ong.contato }}
+            <span class="tooltiptext">
+              Use este contato para falar diretamente com a ONG e alinhar detalhes da doação.
+            </span>
+          </span>
+        </p>
         <p><strong>Data:</strong> {{ i.data_criacao }}</p>
         <p><strong>Status:</strong> {{ STATUS_MAP[i.status] }}</p>
 
@@ -90,15 +106,14 @@
                 onclick="abrirModalConfirmar('{{ i.ID_Intencao }}')">
                 <img src="static/img/icone-pedido.png" class="pedido-icon"> Confirmar Pedido
               </button>
+              <!-- Botão Reprovar -->
+              <button type="button" class="btn-danger"
+                onclick="abrirModalReprovar('{{ i.ID_Intencao }}')">
+                <img src="static/img/icone-reprovado-branco.png" class="pedido-icon"> Reprovar
+              </button>
             </form>
-
-            <!-- Botão Reprovar (fora do form para não conflitar) -->
-            <button type="button" class="btn-danger"
-              onclick="abrirModalReprovar('{{ i.ID_Intencao }}')">
-              <img src="static/img/icone-reprovado-branco.png" class="pedido-icon"> Reprovar
-            </button>
           </div>
-
+          
         {% elif i.status == 2 %}
           <p class="info">
             <img src="static/img/icone-reprovado.png" class="menu-icon"> Esta intenção foi reprovada

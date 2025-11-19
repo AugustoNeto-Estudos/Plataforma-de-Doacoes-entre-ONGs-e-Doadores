@@ -4,37 +4,7 @@
   <meta charset="UTF-8">
   <title>Intenções Recebidas | SolidariHub</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styleIntencoesONG.css') }}">
-  <style>
-    /* Tooltip container */
-    .tooltip {
-      position: relative;
-      display: inline-block;
-    }
-
-    /* Tooltip text */
-    .tooltip .tooltiptext {
-      visibility: hidden;
-      width: 220px;
-      background-color: #333;
-      color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 6px;
-      position: absolute;
-      z-index: 1;
-      bottom: 125%; /* acima do botão */
-      left: 50%;
-      margin-left: -110px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    /* Mostrar tooltip ao passar o mouse */
-    .tooltip:hover .tooltiptext {
-      visibility: visible;
-      opacity: 1;
-    }
-  </style>
+ 
 </head>
 <body>
   <!-- Botão voltar -->
@@ -83,7 +53,23 @@
       <div class="card">
         <p><strong>Campanha:</strong> {{ lista_sel.titulo }}</p>
         <p><strong>Doador:</strong> {{ doador.nome }}</p>
-        <p><strong>Email:</strong> {{ doador.email }} | <strong>Contato:</strong> {{ doador.contato }}</p>
+        <p>
+          <strong>Email:</strong> 
+          <span class="doador-info tooltip">
+            {{ doador.email }}
+            <span class="tooltiptext">
+              Use este email para entrar em contato com o doador e combinar como será feita a doação e as especificações dos itens.
+            </span>
+          </span>
+          | 
+          <strong>Contato:</strong> 
+          <span class="doador-info tooltip">
+            {{ doador.contato }}
+            <span class="tooltiptext">
+              Use este contato para falar diretamente com o doador e alinhar detalhes da doação.
+            </span>
+          </span>
+        </p>
         <p><strong>Data:</strong> {{ i.data_criacao }}</p>
         <p><strong>Status:</strong> {{ STATUS_MAP[i.status] }}</p>
 

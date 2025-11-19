@@ -113,6 +113,6 @@ def reprovar_intencao(id_intencao):
         flash("Intenção não encontrada.", "warning")
         return redirect(url_for("intencoes_doador.intencoes_doador"))
 
-    atualizar_status(id_intencao, 2)
+    atualizar_status(id_intencao, "Reprovado")
     flash("Intenção reprovada. A ONG será notificada.", "error")
     return redirect(url_for("intencoes_doador.intencoes_doador"))
