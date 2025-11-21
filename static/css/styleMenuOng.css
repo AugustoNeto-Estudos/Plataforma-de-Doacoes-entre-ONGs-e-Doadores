@@ -170,7 +170,7 @@ form select,
   transform: translateY(-1px);
 }
 .btn-voltar {
-  background: #d9534f;
+  background: none;
   padding: 6px 12px;
   border-radius: 4px;
   color: white !important;
