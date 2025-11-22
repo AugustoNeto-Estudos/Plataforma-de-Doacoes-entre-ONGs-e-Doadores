@@ -34,13 +34,25 @@ def perfil_ong_doador(cnpj):
     # Consulta pública do CNPJ via BrasilAPI
     dados_cnpj = None
     if request.method == "POST":
-        sucesso, resultado = consultar_cnpj_brasilapi(cnpj)
-        if sucesso:
-            dados_cnpj = resultado
-            flash("Dados públicos da ONG consultados com sucesso.")
+        cnpj_permitido = "13.297.877/0001-38"
+        if cnpj == cnpj_permitido:
+            sucesso, resultado = consultar_cnpj_brasilapi(cnpj)
+            if sucesso:
+                dados_cnpj = resultado
+                flash("Dados públicos da ONG consultados com sucesso.")
+            else:
+                flash(f"Falha ao consultar CNPJ: {resultado}")
+                dados_cnpj = {
+                    "razao_social": "ONG Exemplo Solidária",
+                    "nome_fantasia": "Solidária Mock",
+                    "descricao_situacao_cadastral": "INEXISTENTE",
+                    "natureza_juridica": "Associação Privada",
+                    "data_inicio_atividade": "0000-00-00",
+                    "municipio": "Cidade Fictícia",
+                    "uf": "XX"
+                }
         else:
-            flash(f"Falha ao consultar CNPJ: {resultado}")
-            # Dados mockados para não deixar modal vazio
+            # Para qualquer outro CNPJ, sempre mock
             dados_cnpj = {
                 "razao_social": "ONG Exemplo Solidária",
                 "nome_fantasia": "Solidária Mock",
@@ -50,6 +62,7 @@ def perfil_ong_doador(cnpj):
                 "municipio": "Cidade Fictícia",
                 "uf": "XX"
             }
+            flash("Consulta real não permitida. Exibindo dados fictícios.")
 
     return render_template(
         "perfilONGDoador.html",

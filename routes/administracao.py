@@ -64,20 +64,39 @@ def painel_admin():
             id_item = str(uuid.uuid4())[:8]
             sucesso, msg = inserir_item(id_item, categoria.strip(), subcategoria.strip() or None)
         elif acao == "consultar_cnpj":
-            sucesso, resultado = consultar_cnpj_brasilapi(id)
-            dados_cnpj = resultado if sucesso else {
-                "razao_social": "ONG Exemplo Solidária",
-                "nome_fantasia": "Solidária Mock",
-                "descricao_situacao_cadastral": "INEXISTENTE",
-                "natureza_juridica": "Associação Privada",
-                "data_inicio_atividade": "0000-00-00",
-                "municipio": "Cidade Fictícia",
-                "uf": "XX"
-            }
-            if sucesso:
-                flash("Dados públicos da ONG consultados com sucesso.")
+            # Apenas este CNPJ tem permissão para consulta real
+            cnpj_permitido = "13.297.877/0001-38"
+
+            if id == cnpj_permitido:
+                sucesso, resultado = consultar_cnpj_brasilapi(id)
+                if sucesso:
+                    dados_cnpj = resultado
+                    flash("Dados públicos da ONG consultados com sucesso.")
+                else:
+                    flash(f"Falha ao consultar CNPJ: {resultado}")
+                    # Mesmo o permitido, se falhar, retorna mock
+                    dados_cnpj = {
+                        "razao_social": "ONG Exemplo Solidária",
+                        "nome_fantasia": "Solidária Mock",
+                        "descricao_situacao_cadastral": "INEXISTENTE",
+                        "natureza_juridica": "Associação Privada",
+                        "data_inicio_atividade": "0000-00-00",
+                        "municipio": "Cidade Fictícia",
+                        "uf": "XX"
+                    }
             else:
-                flash(f"Falha ao consultar CNPJ: {resultado}")
+                # Para qualquer outro CNPJ, sempre mock
+                dados_cnpj = {
+                    "razao_social": "ONG Exemplo Solidária",
+                    "nome_fantasia": "Solidária Mock",
+                    "descricao_situacao_cadastral": "INEXISTENTE",
+                    "natureza_juridica": "Associação Privada",
+                    "data_inicio_atividade": "0000-00-00",
+                    "municipio": "Cidade Fictícia",
+                    "uf": "XX"
+                }
+                flash("Consulta real não permitida. Exibindo dados fictícios.")
+
             return render_template(
                 "administracao.html",
                 ongs=listar_ongs(),
