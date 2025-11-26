@@ -1,32 +1,19 @@
 import psycopg2
+import os
 from psycopg2 import OperationalError, Error
+from dotenv import load_dotenv
 
-# # Função de conexão DB hospedado no aws
-# def criar_conexao():
-#     try:
-#         conexao = psycopg2.connect(
-#             host="solidarihubdb.c1qqg6y2ayja.sa-east-1.rds.amazonaws.com",
-#             port="5432",
-#             user="postgres",        
-#             password="020504",
-#             database="SolidariHub"    
-#         )
-#         return conexao
-#     except OperationalError:
-#         return None
- 
-# Função de conexão com o banco de dados Local
+load_dotenv()
+
 def criar_conexao():
     try:
-        # Estabelece conexão com o banco de dados PostgreSQL
-        # Aqui estamos usando um banco local, então o host é 'localhost'
         conexao = psycopg2.connect(
-            host="localhost",        # endereço do servidor local
-            port="5432",             # porta padrão do PostgreSQL
-            user="postgres",         # nome de usuário do banco
-            password="1234",       # senha do usuário
-            database="SolidariHub"   # nome do banco de dados local
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            database=os.getenv("DB_NAME")
         )
-        return conexao  # retorna o objeto de conexão se tudo der certo
+        return conexao
     except OperationalError:
-        return None  # retorna None se ocorrer erro de conexão
+        return None
