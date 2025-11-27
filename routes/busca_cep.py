@@ -9,6 +9,21 @@ from dao.itens import exibir_itens
 
 busca_cep_bp = Blueprint("busca_cep", __name__)
 
+#Cache para armazenar o CEP
+cep_cache = {}
+def buscar_endereco_cache(cep):
+    cep = re.sub(r"\D", "", cep)
+    if len(cep) != 8:
+        return None
+
+    if cep in cep_cache:
+        return cep_cache[cep]
+
+    endereco = buscar_endereco(cep)
+    if endereco:
+        cep_cache[cep] = endereco
+    return endereco
+
 # Rota principal: busca por CEP ou palavra-chave
 @busca_cep_bp.route("/BuscaCEP", methods=["GET", "POST"])
 def busca_cep():
@@ -20,34 +35,44 @@ def busca_cep():
     termo_lower = termo.lower()
     ongs = carregar_ongs()
 
+        # Paginação
+    page = int(request.args.get("page", 1))
+    limit = 20
+    start = (page - 1) * limit
+    end = start + limit
+    total_registros = len(ongs)
+
+    # Aplica paginação
+    ongs_paginadas = ongs[start:end]
+
     if request.method == "POST":
         acao = request.form.get("acao")
 
         if acao == "listar_todas":
-            resultados = ongs
+            resultados = ongs_paginadas
         elif not termo:
             flash("Digite um CEP ou palavra-chave para buscar.")
         elif termo.isdigit() and len(termo) == 8:
             endereco = buscar_endereco(termo)
-            resultados = ongs_ordenadas_por_distancia(termo) if endereco else []
+            resultados = (ongs_ordenadas_por_distancia(termo)[:limit]) if endereco else []
             if not endereco:
                 flash("CEP inválido ou não encontrado.")
         else:
             resultados = [
-                ong for ong in ongs
+                ong for ong in ongs_paginadas
                 if termo_lower in ong.get("nome", "").lower()
                 or termo_lower in ong.get("descricao", "").lower()
                 or termo_lower in ong.get("bairro", "").lower()
                 or termo_lower in ong.get("cidade", "").lower()
             ]
     else:
-        resultados = ongs
+        resultados = ongs_paginadas
 
     # Enriquecer cada ONG com endereço completo
     for ong in resultados:
         cep = re.sub(r"\D", "", ong.get("cep", ""))
         if cep and len(cep) == 8:
-            endereco_ong = buscar_endereco(cep)
+            endereco_ong = buscar_endereco_cache(cep)
             if endereco_ong:
                 partes = [
                     endereco_ong.get("logradouro", ""),
@@ -65,7 +90,10 @@ def busca_cep():
         resultados=resultados,
         endereco=endereco,
         termo=termo,
-    )
+        page=page,
+        limit=limit,
+        total_registros=total_registros
+)
 
 # Rota: localização geográfica via CEP ou texto
 @busca_cep_bp.route("/api/localizacao")
@@ -96,7 +124,7 @@ def api_localizacao():
 
     # Fallback: endereço textual
     # Se não achou, tenta pelo endereço textual do Viacep
-        endereco_viacep = buscar_endereco(cep)
+        endereco_viacep = buscar_endereco_cache(cep)
         if endereco_viacep and "erro" not in endereco_viacep:
             partes = [
                 endereco_viacep.get("logradouro", ""),

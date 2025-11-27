@@ -28,7 +28,21 @@ def menu_doador():
     mapa_ongs = {o["CNPJ_ID"]: o for o in listar_ongs()}
     mapa_itens = {i["ID_Item"]: i for i in exibir_itens()}
 
+    todas_listas = exibir_listas()
+    total_registros = len(todas_listas)
+
+    page = int(request.args.get("page", 1))
+    limit = 50
+    start = (page - 1) * limit
+    end = start + limit
+
+    listas = todas_listas[start:end]
+
+    mapa_ongs = {o["CNPJ_ID"]: o for o in listar_ongs()}  
+    ongs_paginadas = listar_ongs()[start:end]             
+    
     # Aplicar filtro de busca
+
     if busca:
         listas = [
             l for l in listas
@@ -53,7 +67,7 @@ def menu_doador():
 
     if "abrir_modal" in request.args:
         id_lista = request.args.get("abrir_modal")
-        lista_modal = next((l for l in listas if str(l["ID_Lista"]) == str(id_lista)), None)
+        lista_modal = next((l for l in todas_listas if str(l["ID_Lista"]) == str(id_lista)), None)
         if lista_modal:
             ong_modal = mapa_ongs.get(lista_modal["ID_ONG"])
             lista_modal["itens"] = exibir_lista_itens(lista_modal["ID_Lista"])
@@ -116,7 +130,7 @@ def menu_doador():
                     mensagem_modal = "Você já possui uma intenção ativa para esta lista."
                 else:
                     id_intencao = str(uuid.uuid4())[:8]
-                    ong_id = next((l["ID_ONG"] for l in listas if str(l["ID_Lista"]) == str(lista_id)), None)
+                    ong_id = next((l["ID_ONG"] for l in todas_listas if str(l["ID_Lista"]) == str(lista_id)), None)
 
                     if not ong_id:
                         mensagem_modal = "Erro: ONG da lista não encontrada."
@@ -159,5 +173,8 @@ def menu_doador():
         busca=busca,
         comentarios_lista=comentarios_lista,
         likes_lista=likes_lista,
-        dislikes_lista=dislikes_lista
+        dislikes_lista=dislikes_lista,
+        page=page,
+        total_registros=total_registros,
+        limit=limit
     )

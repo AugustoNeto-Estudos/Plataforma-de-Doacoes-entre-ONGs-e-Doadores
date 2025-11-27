@@ -78,6 +78,16 @@
     {% else %}
       <p class="info">Nenhuma ONG encontrada com esse critério.</p>
     {% endif %}
+    <div class="pagination">
+    {% if page > 1 %}
+      <a href="{{ url_for('busca_cep.busca_cep', page=page-1) }}" class="btn-paginacao">← Anterior</a>
+    {% endif %}
+    <span>Página {{ page }}</span>
+    {% if page * limit < total_registros %}
+      <a href="{{ url_for('busca_cep.busca_cep', page=page+1) }}" class="btn-paginacao">Próxima →</a>
+    {% endif %}
+</div>
+
   </div>
 
   <!-- Modal da ONG -->

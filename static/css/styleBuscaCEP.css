@@ -211,3 +211,37 @@ h1, h2, h3, h4 {
   color: #333;
   cursor: pointer;
 }
+
+/* Paginação */
+.pagination {
+  margin-top: 30px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-paginacao {
+  display: inline-block;
+  padding: 10px 18px;
+  background-color: #3452a3; /* mesma cor dos botões principais */
+  border: 1px solid #2f488f;
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-paginacao:hover {
+  background-color: #4d74bb; /* hover igual ao botão voltar */
+  transform: scale(1.05);
+}
+
+/* Estado ativo da página */
+.btn-paginacao.active {
+  background-color: #ffd814; /* destaque amarelo igual ao detalhe dos cards */
+  border: 1px solid #e6c200;
+  color: #2c3e50;
+}
+
