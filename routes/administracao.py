@@ -65,7 +65,7 @@ def painel_admin():
             sucesso, msg = inserir_item(id_item, categoria.strip(), subcategoria.strip() or None)
         elif acao == "consultar_cnpj":
             # Apenas este CNPJ tem permissão para consulta real
-            cnpj_permitido = "13.297.877/0001-38"
+            cnpj_permitido = "13297877000138"
 
             if id == cnpj_permitido:
                 sucesso, resultado = consultar_cnpj_brasilapi(id)
@@ -141,3 +141,4 @@ def painel_admin():
         doadores = [d for d in doadores if not d["status_conta"]]
 
     return render_template("administracao.html", ongs=ongs, doadores=doadores, itens=itens)
+
