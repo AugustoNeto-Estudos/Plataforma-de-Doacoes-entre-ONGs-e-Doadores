@@ -1,0 +1,284 @@
+/* ====== BASE ====== */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  background: url("https://img.freepik.com/free-photo/vivid-blurred-colorful-wallpaper-background_58702-3883.jpg") no-repeat center center fixed;
+  background-size: cover;
+  color: #333;
+}
+
+/* ====== HEADER ====== */
+.header {
+  background-color: #232f3e;
+  padding: 12px 20px;
+  color: #fff;
+}
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo-img {
+  height: 45px;
+}
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.nav-links a:hover {
+  color: #ffd814;
+  background: rgba(255,255,255,0.1);
+}
+
+/* ====== DROPDOWN NOTIFICAÇÕES ====== */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.notif-btn {
+  background: #37475a;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.notif-btn:hover {
+  background: #485769;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 220px;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.dropdown-content a, .dropdown-content span {
+  color: #333;
+  padding: 10px 14px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+}
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* ====== BOTÕES DINÂMICOS ====== */
+.highlight {
+  color: #ffffff !important;
+  animation: blink 1s infinite;
+}
+@keyframes blink {
+  50% { background: #ffe066; }
+}
+
+/* ====== CONTAINER ====== */
+.container {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ====== CARDS ====== */
+.card {
+  background-color: #fff;
+  border: 1px solid #d0d7e2;
+  border-left: 6px solid #3452a3; /* detalhe azul */
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.card h2 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+/* ====== FORMULÁRIOS ====== */
+form input[type="text"],
+form input[type="number"],
+form textarea,
+form select,
+.choices {
+  width: 100%;
+  max-width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccd6dd;
+  font-size: 1rem;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+/* Quantidades */
+.item-qtd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.item-qtd label {
+  flex: 1;
+  font-weight: bold;
+}
+.item-qtd input[type="number"] {
+  width: 80px;
+}
+
+/* ====== BOTÕES ====== */
+.btn-amazon {
+  background-color: #ffd814;
+  border: 1px solid #fcd200;
+  color: #111;
+  font-weight: bold;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.btn-amazon:hover {
+  background-color: #f7ca00;
+  transform: translateY(-1px);
+}
+.btn-voltar {
+  background: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  color: white !important;
+}
+.btn-voltar:hover {
+  background: #c9302c;
+}
+
+/* ====== ÍCONES ====== */
+.menu-icon {
+  height: 20px;
+  width: 20px;
+  vertical-align: middle;
+  margin-right: 4px;
+  margin-bottom: 3px;
+}
+.ong-icon {
+  height: 40px;
+  width: 40px;
+  vertical-align: middle;
+  margin-right: 4px;
+  margin-bottom: 3px;
+}
+.box-icon {
+  height: 30px;
+  width: 30px;
+  vertical-align: middle;
+  margin-right: 4px;
+  margin-bottom: 3px;
+}
+.toast-icon {
+  height: 18px;
+  width: 18px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* ====== CHOICES.JS ====== */
+/* Itens selecionados */
+.choices__list--multiple .choices__item {
+  background-color: #eef3ff;
+  border: 1px solid #c7d2fe;
+  color: #111;
+  border-radius: 20px;
+  padding: 4px 8px;
+  margin: 2px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Botão de remoção com ícone */
+.choices__list--multiple .choices__item .choices__button {
+  margin-left: 6px;
+  border: none;
+  background: url("../img/icone-x.png") no-repeat center center; /* seu ícone */
+  background-size: 12px 12px;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  text-indent: -9999px; /* esconde qualquer texto interno */
+  overflow: hidden;
+}
+
+/* Remove pseudo-elementos duplicados */
+.choices__list--multiple .choices__item .choices__button::before,
+.choices__list--multiple .choices__item .choices__button::after {
+  content: none !important;
+}
+
+/* Força o multiselect do catálogo a ocupar toda a largura no card de criação */
+.card:first-of-type .choices,
+.card:first-of-type .choices__inner {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+/* ====== TOASTS ====== */
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 2000;
+}
+.toast {
+  padding: 12px 18px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  animation: fadein 0.5s, fadeout 0.5s 4.5s;
+}
+.toast.info {
+  background: #17a2b8;
+}
+.toast.warning {
+  background: #ffc107;
+  color: #000;
+}
+.toast.success {
+  background: #28a745;
+}
+@keyframes fadein {
+  from { opacity: 0; right: 0; }
+  to { opacity: 1; right: 20px; }
+}
+@keyframes fadeout {
+  from { opacity: 1; right: 20px; }
+  to { opacity: 0; right: 0; }
+}
