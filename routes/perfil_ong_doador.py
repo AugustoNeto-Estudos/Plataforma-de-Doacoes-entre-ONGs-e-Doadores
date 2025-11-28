@@ -34,7 +34,7 @@ def perfil_ong_doador(cnpj):
     # Consulta pública do CNPJ via BrasilAPI
     dados_cnpj = None
     if request.method == "POST":
-        cnpj_permitido = "13.297.877/0001-38"
+        cnpj_permitido = "13297877000138"
         if cnpj == cnpj_permitido:
             sucesso, resultado = consultar_cnpj_brasilapi(cnpj)
             if sucesso:
@@ -84,3 +84,4 @@ def consultar_cnpj_brasilapi(cnpj):
         return False, f"Erro {response.status_code}: {response.text}"
     except Exception as e:
         return False, f"Erro na requisição: {str(e)}"
+
