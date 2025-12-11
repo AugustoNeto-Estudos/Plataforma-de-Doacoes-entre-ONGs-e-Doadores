@@ -1,36 +1,37 @@
-SolidariHub – Plataforma de Doações entre ONGs e Doadores
-SolidariHub é uma plataforma web que conecta ONGs e doadores de forma simples, segura e transparente. O objetivo é facilitar o processo de doação, tornando-o mais organizado e confiável, tanto para quem doa quanto para quem recebe.
+# SolidariHub – Plataforma de Doações entre ONGs e Doadores
 
-Funcionalidades Principais
-Cadastro de Usuários: ONGs e Doadores podem se registrar e acessar o sistema.
+**SolidariHub** é uma plataforma web desenvolvida para conectar ONGs e doadores de forma simples, segura e transparente. O objetivo é facilitar o processo de doação, tornando-o mais organizado e confiável para ambas as partes.
 
-Gerenciamento de Itens e Listas: ONGs criam listas de itens necessários, organizadas por categoria e quantidade.
+## Funcionalidades Principais
 
-Intenção de Doação: Doadores podem demonstrar interesse em doar para listas específicas.
+- **Cadastro de Usuários**: ONGs e doadores podem se registrar e acessar o sistema.
+- **Gerenciamento de Listas(Campanhas)**: ONGs criam listas(campanhas) de itens necessários, organizadas por categoria e quantidade.
+- **Intenção de Doação**: Doadores demonstram interesse em doar para listas específicas.
+- **Pedidos de Doação**: Após confirmação mútua, o sistema gera um pedido formal.
+- **Histórico e Acompanhamento**: Acompanhamento de status de listas, intenções e pedidos.
 
-Pedidos de Doação: Quando ONG e Doador confirmam a intenção, o sistema gera um pedido formal.
+## Entidades do Sistema
 
-Histórico e Acompanhamento: Possibilidade de acompanhar status de listas, intenções e pedidos de doações.
+- **ONG**: Dados cadastrais, status de verificação e descrição.
+- **Doador**: Informações básicas para login e contato.
+- **Item**: Categorias e subcategorias de itens.
+- **Lista**: Criada pela ONG, agrupa os itens necessários.
+- **Intenção de Doação**: Registro do interesse do doador.
+- **Pedido**: Confirmação da doação após aceite da ONG e doador.
 
-Entidades Principais
-ONG: informações cadastrais, status de verificação e descrição.
+## Tecnologias Utilizadas
 
-Doador: informações básicas para login e contato.
+- **Linguagem**: Python com Flask(Microframework)
+- **Banco de Dados**: PostgreSQL (Hospedado no RDS AWS)
+- **Server**: Em nosso projeto optamos e recomendamos utilização de computação em nuvem para maior escalabilidade, Utilizamos em nosso caso hospedagem http em um EC2, configurando o systemd para que o sistema rode em background junto a instancia, liberando a porta 5000 para conexão de usuarios comuns ao website
+- **Bibliotecas**: psycopg2, psycopg2-binary, Flask, Flask-Mail, geopy, bcrypt, requests, reportlab, python-dotenv
 
-Item: categorias e subcategorias de itens.
 
-Lista: criada pela ONG, agrupa os itens que ela precisa.
 
-Intenção de Doação: registro de interesse do doador em atender uma lista.
+## Objetivo do Projeto
 
-Pedido: confirmação de doação após aceite da ONG e doador.
+Promover a solidariedade e fortalecer a relação entre ONGs e doadores, oferecendo uma solução tecnológica que garanta transparência, organização e eficiência em todo o processo de doação.
 
-Tecnologias Utilizadas
-Linguagem: Pythoncom Flask
+---
 
-Banco de Dados: PostgreSQL (RDS AWS)
-
-Bibliotecas: psycopg2, geopy
-
-Objetivo do Projeto
-O SolidariHub busca promover a solidariedade e fortalecer a relação entre ONGs e doadores, oferecendo uma solução tecnológica que garante transparência, organização e eficiência em todo o processo de doação.
+> ⚠️ Este repositório contém o código-fonte do projeto, com exceção das variáveis de ambiente e credenciais sensíveis.
